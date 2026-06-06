@@ -1,7 +1,4 @@
 
-
-
-
 <!DOCTYPE html>
 
 <html>
@@ -443,6 +440,7 @@ const rules=[
 ["रुपया","रुपैया"],
 
 ["खड़ा","ठाढ़"],
+
 ["नुकसान","नोकसान"],
 
 ["पौधा","गाछ"],
@@ -572,7 +570,12 @@ const rules=[
 ["अंगोछा","गमछा"],
 
 ["अंगार","अंगोर"],
- ["अचानक","अनचोके"],
+
+ 
+
+["अकाल","दुर्भिक्ष"],
+
+["अचानक","अनचोके"],
 
 ["अकेला","एकसर"],
 
@@ -631,360 +634,134 @@ const rules=[
 ["ADG","एडीजी"],
 
 ["CMO","सीएमओ"],
+
 ["सबसे","सबसं"]
+
 ];
 
+ 
+
 const inputNews=document.getElementById("inputNews");
+
 const outputNews=document.getElementById("outputNews");
+
+ 
 
 function replaceWholeWord(text,find,replace){
 
+ 
+
 const escaped=find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 
+ 
+
 return text.replace(
+
 new RegExp(
+
 '(^|[^\\u0900-\\u097F])'+escaped+
+
 '(?=[^\\u0900-\\u097F]|$)','g'
+
 ),
+
 m=>m.replace(find,replace)
+
 );
 
+ 
+
 }
+
+ 
 
 function processNews(){
 
+ 
+
 let text=inputNews.value;
 
+ 
+
 rules.forEach(rule=>{
+
 text=replaceWholeWord(text,rule[0],rule[1]);
+
 });
+
+ 
 
 text=text.replace(/ँ/g,"ं");
 
+ 
+
 outputNews.value=text;
+
+ 
 
 }
 
+ 
+
 document.getElementById("correctBtn")
+
 .addEventListener("click",processNews);
 
+ 
+
 document.getElementById("copyBtn")
+
 .addEventListener("click",()=>{
 
+ 
+
 navigator.clipboard.writeText(
+
 outputNews.value
+
 );
+
+ 
 
 alert("Copied");
 
+ 
+
 });
+
+ 
 
 document.getElementById("clearBtn")
+
 .addEventListener("click",()=>{
 
+ 
+
 inputNews.value="";
+
 outputNews.value="";
 
+ 
+
 });
+
+ 
 
 function saveNews(){
 
+ 
+
 let news=outputNews.value.trim();
+
+ 
 
 if(!news)return;
 
-let saved=
-JSON.parse(
-localStorage.getItem("savedNews")||"[]"
-);
-
-saved.unshift(news);
-
-localStorage.setItem(
-"savedNews",
-JSON.stringify(saved)
-);
-
-loadSavedNews();
-
-}
-
-document.getElementById("saveBtn")
-.addEventListener("click",saveNews);
-
-function loadSavedNews(){
+ 
 
 let saved=
+
 JSON.parse(
-localStorage.getItem("savedNews")||"[]"
-);
 
-let html="";
+localStorage.getItem("
 
-saved.forEach((n,i)=>{
-
-html+=`
-<div>
-News ${i+1}
-<button onclick="openNews(${i})">
-Open
-</button>
-<button onclick="deleteNews(${i})">
-Delete
-</button>
-</div>
-`;
-
-});
-
-document.getElementById("savedNewsList")
-.innerHTML=html;
-
-document.getElementById("countBox")
-.innerHTML=
-"Saved News : "+saved.length;
-
-}
-
-function openNews(i){
-
-let saved=
-JSON.parse(
-localStorage.getItem("savedNews")||"[]"
-);
-
-outputNews.value=saved[i];
-
-}
-
-function deleteNews(i){
-
-let saved=
-JSON.parse(
-localStorage.getItem("savedNews")||"[]"
-);
-
-saved.splice(i,1);
-
-localStorage.setItem(
-"savedNews",
-JSON.stringify(saved)
-);
-
-loadSavedNews();
-
-}
-
-let customRules=
-JSON.parse(
-localStorage.getItem("customRules")||"[]"
-);
-
-customRules.forEach(r=>rules.push(r));
-
-function showRules(){
-
-let html="";
-
-customRules.forEach((r,i)=>{
-
-html+=`
-<div>
-${r[0]} ➜ ${r[1]}
-<button onclick="deleteRule(${i})">
-Delete
-</button>
-</div>
-`;
-
-});
-
-document.getElementById("ruleList")
-.innerHTML=html;
-
-}
-
-document.getElementById("addRuleBtn")
-.addEventListener("click",()=>{
-
-let oldWord=
-document.getElementById("oldWord").value.trim();
-
-let newWord=
-document.getElementById("newWord").value.trim();
-
-if(!oldWord||!newWord)return;
-
-customRules.push([oldWord,newWord]);
-rules.push([oldWord,newWord]);
-
-localStorage.setItem(
-"customRules",
-JSON.stringify(customRules)
-);
-
-showRules();
-
-});
-
-function deleteRule(i){
-
-customRules.splice(i,1);
-
-localStorage.setItem(
-"customRules",
-JSON.stringify(customRules)
-);
-
-location.reload();
-
-}
-
-/* PHOTO SECTION */
-
-let currentImageData="";
-let autoPhotoNo=parseInt(
-localStorage.getItem("autoPhotoNo")||"1"
-);
-
-document.getElementById("photoNumber")
-.value=autoPhotoNo;
-
-document.getElementById("photoInput")
-.addEventListener("change",function(){
-
-const file=this.files[0];
-
-if(!file)return;
-
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-currentImageData=e.target.result;
-
-document.getElementById("previewImg")
-.src=currentImageData;
-
-document.getElementById("previewImg")
-.style.display="block";
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
-document.addEventListener("paste",function(e){
-
-const items=e.clipboardData.items;
-
-for(let item of items){
-
-if(item.type.indexOf("image")!==-1){
-
-const file=item.getAsFile();
-
-const reader=new FileReader();
-
-reader.onload=function(ev){
-
-currentImageData=ev.target.result;
-
-document.getElementById("previewImg")
-.src=currentImageData;
-
-document.getElementById("previewImg")
-.style.display="block";
-
-};
-
-reader.readAsDataURL(file);
-
-}
-
-}
-
-});
-
-function downloadJPG(){
-
-if(!currentImageData){
-alert("पहिने फोटो चुनू");
-return;
-}
-
-const img=new Image();
-
-img.onload=function(){
-
-const canvas=
-document.createElement("canvas");
-
-canvas.width=img.width;
-canvas.height=img.height;
-
-canvas.getContext("2d")
-.drawImage(img,0,0);
-
-let num=
-document.getElementById("photoNumber")
-.value;
-
-canvas.toBlob(function(blob){
-
-const a=
-document.createElement("a");
-
-a.href=
-URL.createObjectURL(blob);
-
-a.download=num+".jpg";
-
-a.click();
-
-autoPhotoNo=parseInt(num)+1;
-
-localStorage.setItem(
-"autoPhotoNo",
-autoPhotoNo
-);
-
-document.getElementById("photoNumber")
-.value=autoPhotoNo;
-
-},"image/jpeg",1);
-
-};
-
-img.src=currentImageData;
-
-}
-
-setInterval(()=>{
-
-localStorage.setItem(
-"draftNews",
-inputNews.value
-);
-
-},5000);
-
-window.onload=function(){
-
-let draft=
-localStorage.getItem("draftNews");
-
-if(draft){
-inputNews.value=draft;
-}
-
-showRules();
-loadSavedNews();
-
-};
-
-</script>
-
-</body>
-</html>
