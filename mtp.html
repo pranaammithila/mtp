@@ -1,4 +1,6 @@
 
+Amitabh Ranjan <amitabhranjannews@gmail.com>	Sat, Jun 6, 2026 at 8:19 PM
+To: Amitabh Ranjan <amitabhranjannews@gmail.com>
 <!DOCTYPE html>
 
 <html>
@@ -236,9 +238,6 @@ margin-top:10px;
  
 
 const rules=[
-
- 
-
 ["सँ","सं"],
 
 ["केँ","कें"],
@@ -399,7 +398,7 @@ const rules=[
 
 ["पांचवां","पांचम"],
 
-["अब तक","एखन धरि"],
+ ["अब तक","एखन धरि"],
 
 ["बड़ा","पैघ"],
 
@@ -476,10 +475,7 @@ const rules=[
 ["शनिवार","शनि"],
 
 ["रविवार","रवि"],
-
- 
-
-["निर्देश दिया","निर्देश देलनि"],
+ ["निर्देश दिया","निर्देश देलनि"],
 
 ["समीक्षा की","समीक्षा कएलनि"],
 
@@ -607,7 +603,7 @@ const rules=[
 
 ["कऽ","कए"],
 
-["दऽ","दए"],
+ ["दऽ","दए"],
 
 ["भऽ","भए"],
 
@@ -763,5 +759,286 @@ let saved=
 
 JSON.parse(
 
-localStorage.getItem("
+localStorage.getItem("savedNews")||"[]"
 
+);
+saved.unshift(news);
+
+ 
+
+localStorage.setItem(
+
+"savedNews",
+
+JSON.stringify(saved)
+
+);
+
+ 
+
+loadSavedNews();
+
+ 
+
+}
+
+ 
+
+document.getElementById("saveBtn")
+
+.addEventListener("click",saveNews);
+
+ 
+
+function loadSavedNews(){
+
+ 
+
+let saved=
+
+JSON.parse(
+
+localStorage.getItem("savedNews")||"[]"
+
+);
+
+ 
+
+let html="";
+
+ 
+
+saved.forEach((n,i)=>{
+
+ 
+
+html+=`
+
+<div>
+
+News ${i+1}
+
+<button onclick="openNews(${i})">
+
+Open
+
+</button>
+
+<button onclick="deleteNews(${i})">
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+ 
+
+});
+
+ 
+
+document.getElementById("savedNewsList")
+
+.innerHTML=html;
+
+ 
+
+document.getElementById("countBox")
+
+.innerHTML=
+
+"Saved News : "+saved.length;
+
+ 
+
+}
+
+ 
+
+function openNews(i){
+
+ 
+
+let saved=
+
+JSON.parse(
+
+localStorage.getItem("savedNews")||"[]"
+
+);
+
+ 
+
+outputNews.value=saved[i];
+
+ 
+
+}
+
+ 
+
+function deleteNews(i){
+
+ 
+
+let saved=
+
+JSON.parse(
+
+localStorage.getItem("savedNews")||"[]"
+
+);
+
+ 
+
+saved.splice(i,1);
+
+ 
+
+localStorage.setItem(
+
+"savedNews",
+
+JSON.stringify(saved)
+
+);
+
+ 
+
+loadSavedNews();
+
+ 
+
+}
+
+ 
+
+let customRules=
+
+JSON.parse(
+
+localStorage.getItem("customRules")||"[]"
+
+);
+
+ 
+
+customRules.forEach(r=>rules.push(r));
+
+ 
+
+function showRules(){
+
+ 
+
+let html="";
+
+ 
+
+customRules.forEach((r,i)=>{
+
+ 
+
+html+=`
+
+<div>
+
+${r[0]} ➜ ${r[1]}
+
+<button onclick="deleteRule(${i})">
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+ 
+
+});
+
+ document.getElementById("photoNumber")
+
+.value=autoPhotoNo;
+
+ 
+
+},"image/jpeg",1);
+
+ 
+
+};
+
+ 
+
+img.src=currentImageData;
+
+ 
+
+}
+
+ 
+
+setInterval(()=>{
+
+ 
+
+localStorage.setItem(
+
+"draftNews",
+
+inputNews.value
+
+);
+
+ 
+
+},5000);
+
+ 
+
+window.onload=function(){
+
+ 
+
+let draft=
+
+localStorage.getItem("draftNews");
+
+ 
+
+if(draft){
+
+inputNews.value=draft;
+
+}
+
+ 
+
+showRules();
+
+loadSavedNews();
+
+ 
+
+};
+
+ 
+
+</script>
+
+ 
+
+</body>
+
+</html>
+
+ 
+
+ 
+ 
