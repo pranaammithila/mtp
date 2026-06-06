@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html>
@@ -307,7 +306,7 @@ const rules=[
 
 ["बनाए","बना"],
 
-["खिलाड़ी","खेलाड़ी"],
+["खिलाड़ी","खेलाड़ी"],
 
 ["बेहतर","नीक"],
 
@@ -461,7 +460,7 @@ const rules=[
 
 ["शाम","सांझ"],
 
-["संझा","सांझ"],
+["संझा","सा���झ"],
 
 ["गुरुवार","बृहस्पति"],
 
@@ -519,11 +518,11 @@ const rules=[
 
 ["पांचवें","पांचम"],
 
-["बाढ़","बाढ़ि"],
+["बाढ़","बाढ़ि"],
 
 ["भ'","भए"],
 
-["भ’","भए"],
+["भ'","भए"],
 
 ["ओर से","दिस सं"],
 
@@ -549,7 +548,7 @@ const rules=[
 
 ["बीमार","बेमार"],
 
-["बुखार","बोखार"],
+["बुखार","बोख���र"],
 
 ["आंधी","अन्हर"],
 
@@ -617,7 +616,7 @@ const rules=[
 
 ["हजारों","हजारो"],
 
-["करोड़ों","करोड़ो"],
+["करोड़ों","करोड़ो"],
 
 ["सैकड़ों","सैकड़ो"],
 
@@ -649,11 +648,7 @@ const outputNews=document.getElementById("outputNews");
 
 function replaceWholeWord(text,find,replace){
 
- 
-
 const escaped=find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-
- 
 
 return text.replace(
 
@@ -669,19 +664,13 @@ m=>m.replace(find,replace)
 
 );
 
- 
-
 }
 
  
 
 function processNews(){
 
- 
-
 let text=inputNews.value;
-
- 
 
 rules.forEach(rule=>{
 
@@ -689,59 +678,33 @@ text=replaceWholeWord(text,rule[0],rule[1]);
 
 });
 
- 
-
 text=text.replace(/ँ/g,"ं");
 
- 
-
 outputNews.value=text;
-
- 
 
 }
 
  
 
-document.getElementById("correctBtn")
-
-.addEventListener("click",processNews);
+document.getElementById("correctBtn").addEventListener("click",processNews);
 
  
 
-document.getElementById("copyBtn")
+document.getElementById("copyBtn").addEventListener("click",()=>{
 
-.addEventListener("click",()=>{
-
- 
-
-navigator.clipboard.writeText(
-
-outputNews.value
-
-);
-
- 
+navigator.clipboard.writeText(outputNews.value);
 
 alert("Copied");
-
- 
 
 });
 
  
 
-document.getElementById("clearBtn")
-
-.addEventListener("click",()=>{
-
- 
+document.getElementById("clearBtn").addEventListener("click",()=>{
 
 inputNews.value="";
 
 outputNews.value="";
-
- 
 
 });
 
@@ -749,19 +712,222 @@ outputNews.value="";
 
 function saveNews(){
 
- 
-
 let news=outputNews.value.trim();
-
- 
 
 if(!news)return;
 
+let saved=JSON.parse(localStorage.getItem("savedNews")||"[]");
+
+saved.push({
+
+date:new Date().toLocaleString(),
+
+content:news
+
+});
+
+localStorage.setItem("savedNews",JSON.stringify(saved));
+
+displaySavedNews();
+
+alert("News saved successfully!");
+
+}
+
  
 
-let saved=
+function displaySavedNews(){
 
-JSON.parse(
+let saved=JSON.parse(localStorage.getItem("savedNews")||"[]");
 
-localStorage.getItem("
+let html="";
 
+saved.forEach((item,index)=>{
+
+html+=`<div style="border:1px solid #ddd;padding:10px;margin-bottom:10px;border-radius:4px;">
+
+<strong>${item.date}</strong><br>
+
+${item.content.substring(0,100)}...<br>
+
+<button onclick="loadNews(${index})">Load</button>
+
+<button onclick="deleteNews(${index})">Delete</button>
+
+</div>`;
+
+});
+
+document.getElementById("savedNewsList").innerHTML=html;
+
+document.getElementById("countBox").textContent="Total saved: "+saved.length;
+
+}
+
+ 
+
+function loadNews(index){
+
+let saved=JSON.parse(localStorage.getItem("savedNews")||"[]");
+
+outputNews.value=saved[index].content;
+
+}
+
+ 
+
+function deleteNews(index){
+
+let saved=JSON.parse(localStorage.getItem("savedNews")||"[]");
+
+saved.splice(index,1);
+
+localStorage.setItem("savedNews",JSON.stringify(saved));
+
+displaySavedNews();
+
+}
+
+ 
+
+document.getElementById("saveBtn").addEventListener("click",saveNews);
+
+ 
+
+document.getElementById("addRuleBtn").addEventListener("click",()=>{
+
+let oldWord=document.getElementById("oldWord").value;
+
+let newWord=document.getElementById("newWord").value;
+
+if(!oldWord||!newWord){
+
+alert("Please enter both old and new words");
+
+return;
+
+}
+
+rules.push([oldWord,newWord]);
+
+document.getElementById("oldWord").value="";
+
+document.getElementById("newWord").value="";
+
+displayCustomRules();
+
+alert("Rule added!");
+
+});
+
+ 
+
+function displayCustomRules(){
+
+let html="";
+
+rules.forEach((rule,index)=>{
+
+html+=`<div style="border:1px solid #ddd;padding:8px;margin-bottom:5px;border-radius:3px;">
+
+${rule[0]} → ${rule[1]}
+
+<button onclick="deleteRule(${index})" style="float:right;background:#dc3545;">Delete</button>
+
+</div>`;
+
+});
+
+document.getElementById("ruleList").innerHTML=html;
+
+}
+
+ 
+
+function deleteRule(index){
+
+rules.splice(index,1);
+
+displayCustomRules();
+
+}
+
+ 
+
+function downloadJPG(){
+
+let fileInput=document.getElementById("photoInput");
+
+let photoNumber=document.getElementById("photoNumber").value;
+
+if(!fileInput.files[0]){
+
+alert("Please select an image file");
+
+return;
+
+}
+
+if(!photoNumber){
+
+alert("Please enter photo number");
+
+return;
+
+}
+
+let file=fileInput.files[0];
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+let img=new Image();
+
+img.src=e.target.result;
+
+img.onload=function(){
+
+let canvas=document.createElement("canvas");
+
+canvas.width=img.width;
+
+canvas.height=img.height;
+
+let ctx=canvas.getContext("2d");
+
+ctx.drawImage(img,0,0);
+
+let link=document.createElement("a");
+
+link.href=canvas.toDataURL("image/jpeg",0.95);
+
+link.download="photo_"+photoNumber+".jpg";
+
+link.click();
+
+document.getElementById("previewImg").src=link.href;
+
+document.getElementById("previewImg").style.display="block";
+
+};
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+ 
+
+displaySavedNews();
+
+ 
+
+</script>
+
+ 
+
+</body>
+
+</html>
