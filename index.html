@@ -1,11 +1,8 @@
-<!DOCTYPE html><html><head><script defer data-domain="maithil.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head><body>﻿```AMIITABH RANJAN 
-
-
-
+<!DOCTYPE html>
+<html lang="mai">
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title data-id="th-modified">News Correction &amp; Photo Manager</title>
-
+<title>मैथिली समाचार शोधक टूल</title>
 <style>
 body{
 font-family:Arial,sans-serif;
@@ -21,6 +18,16 @@ border-radius:8px;
 box-shadow:0 1px 5px rgba(0,0,0,.1);
 }
 
+.grid-box {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 15px;
+}
+
+@media(max-width: 768px) {
+.grid-box { grid-template-columns: 1fr; }
+}
+
 textarea{
 width:100%;
 height:250px;
@@ -34,6 +41,293 @@ box-sizing:border-box;
 input{
 width:100%;
 padding:10px;
+margin-bottom:10px;
+border:1px solid #ccc;
+border-radius:6px;
+box-sizing:border-box;
+}
+
+button{
+padding:10px 15px;
+margin:3px;
+cursor:pointer;
+border:none;
+border-radius:5px;
+background:#0073aa;
+color:#fff;
+}
+
+button:hover{
+background:#005f8d;
+}
+
+#savedNewsList div{
+padding:8px;
+border-bottom:1px solid #ddd;
+}
+
+#countBox{
+margin-top:10px;
+font-weight:bold;
+}
+
+.live-counter {
+font-size: 14px;
+color: #555;
+margin-top: 5px;
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+<input id="oldWord" type="text" placeholder="पुरान शब्द">
+<input id="newWord" type="text" placeholder="नव शब्द">
+<button id="addRuleBtn">Add Rule</button>
+</div>
+
+<div class="grid-box">
+    <div class="box">
+        <textarea id="inputNews" placeholder="एतय समाचार पेस्ट करू"></textarea>
+        <div id="inputStats" class="live-counter">शब्द: 0 | अक्षर: 0</div>
+    </div>
+    <div class="box">
+        <textarea id="outputNews" placeholder="सुधारल समाचार एतय आएत"></textarea>
+        <div id="outputStats" class="live-counter">शब्द: 0 | अक्षर: 0</div>
+    </div>
+</div>
+
+<div class="box">
+<button id="correctBtn">सुधारू</button>
+<button id="copyBtn">Copy</button>
+<button id="saveBtn">Save</button>
+<button id="clearBtn">Clear</button>
+</div>
+
+<div class="box">
+<h3>Custom Rules</h3>
+<div id="ruleList"></div>
+<hr>
+<h3>Saved News</h3>
+<div id="savedNewsList"></div>
+<div id="countBox"></div>
+</div>
+
+<script>
+const rules = [
+["सँ","सं"], ["केँ","कें"], ["में","मे"], ["पानी","पानि"], ["कहलथिन","कहलनि"],
+["जबकि","जखनकि"], ["आज","आइ"], ["सुबह","भोर"], ["केवल","मात्र"], ["चौथा","चारिम"],
+["तीसरा","तेसर"], ["दूसरा","दोसर"], ["पांचवां","पांचम"], ["अब तक","एखन धरि"],
+["बड़ा","पैघ"], ["नजर","नजरि"], ["आग","आगि"], ["मरीज","रोगी"], ["गिरा","खसल"],
+["गिरे","खसल"], ["राहत","राहति"], ["बार-बार","बेर-बेर"], ["मिलल","भेटल"],
+["ओर से","दिस सं"], ["सिर्फ","मात्र"], ["तालाब","पोखरि"], ["भ","भए"], ["सफेद","उजर"],
+["मौसम","मौसिम"], ["मौसमक","मौसिमक"], ["बनाए","बना"], ["खिलाड़ी","खेलाड़ी"],
+["खिलाड़ीक","खेलाड़ीक"], ["बेहतर","नीक"], ["संभाललनि","संभारलनि"],
+["मुकाबलाक","मोकाबलाक"], ["दिलौलनि","दियौलनि"], ["तऽ","तं"], ["होएेत","होयत"],
+["होएेला","भेला"], ["फैलैत","पसरैत"], ["लाखों","लाखो"], ["सम्पूर्ण","संपूर्ण"],
+["सम्पत्ति","संपत्ति"], ["सम्पर्क","संपर्क"], ["सम्पादन","संपादन"], ["सम्पन्न","संपन्न"],
+["सम्पन्नता","संपन्नता"], ["सम्प्रदाय","संप्रदाय"], ["सम्प्रेषण","संप्रेषण"], ["सम्पोषण","संपोषण"],
+["सम्बन्ध","संबंध"], ["सम्बन्धित","सं संबंधित"], ["सम्बन्धी","संबंधी"], ["सम्बोधन","संबोधन"],
+["सम्बल","संबल"], ["करि","कए"], ["जाएबापर", "गेला पर"], ["आरम्भ", "आरंभ"],
+["कएने", "केने"], ["जनआन्दोलन", "जनआंदोलन"], ["आन्दोलन", "आंदोलन"], ["अत्यन्त", "अत्यंत"],
+["सिन्दूर", "सिंदूर"], ["निरन्तर", "निरंतर"], ["महागठबन्धनक", "महागठबंधनक"],
+["महागठबन्धन", "महागठबंधन"], ["गठबन्धन", " गठबंधन"], ["सम्भव","संभव"],
+["सम्भावना","संभावना"], ["सम्भाल","संभाल"], ["सम्भवतः","संभवतः"], ["सम्भाषण","संभाषण"],
+["कहा","कहलनि"], ["बताया","बतौलनि"], ["पूरी तरह","पूरा तरहे"], ["चार","चारि"],
+["ओर सं","दिस सं"], ["वाला","बला"], ["तहत","abstract"], ["जल्द","शीघ्र"],
+["विश्वभर","विश्वभरि"], ["देशभर","देशभरि"], ["हुनकें","हुनका"], ["काफी","बहुत"],
+["घाम","रौद"], ["वर्षा","बरखा"], ["रुपया","रुपैया"], ["खड़ा","ठाढ़"],
+["nuksan","नोकसान"], ["पौधा","गाछ"], ["रख","राखि"], ["बड़ी","पैघ"],
+["बड़े","पैघ"], ["वाले","बला"], ["सबसे","सबसं"], ["शाम","सांझ"], ["संझा","सांझ"],
+["गुरुवार","बृहस्पति"], ["सोमवार","सोम"], ["मंगलवार","मंगल"], ["बुध्रवार","बुध"],
+["शुक्रवार","शुक्र"], ["शनिवार","शनि"], ["रविवार","रवि"], ["निर्देश दिया","निर्देश देलनि"],
+["समीक्षा की","समीक्षा कएलनि"], ["मांग की","मांग राखल गेल"], ["निर्णय लिया","निर्णय लेल गेल"],
+["शुरू हुआ","शुरुआत भेल"], ["शुरू हुई","शुरुआत भेल"], ["समाप्त हुआ","समापन भेल"],
+["समाप्त हुई","समापन भेल"], ["चौड़ी","चौड़ा"], ["पहुँचे","पहुंचल"], ["उपस्थित रहे","उपस्थित छलाह"],
+["शामिल हुए","शामिल भेलाह"], ["दूसरी","दोसर"], ["दूसरे","दोसर"], ["तीसरी","तेसर"],
+["तीसरे","तेसर"], ["चौथी","चारिम"], ["चौथे","चारिम"], ["पांचवीं","पांचम"],
+["पांचवें","पांचम"], ["बाढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"],
+["लेकर","लए कए"], ["ले कर","लए कए"], ["सुनवाई","सुनवाइ"], ["दुकान","दोकान"],
+["दुकानक","दोकानक"], ["दुकानकार","दोकानदार"], ["दुकानदारक","दोकानदारक"],
+["खिलाफ","विरुद्ध"], ["मुकाबला","मोकाबला"], ["बीमार","बेमार"], ["बुखार","बोखार"],
+["आंधी","अन्हर"], ["आँधी","अन्हर"], ["तूफान","बीहाड़ि"], ["अखबार","समाचारपत्र"],
+["अंधकार","अन्हार"], ["अंधा","आन्हर"], ["अंगूठा","औंठा"], ["अंगूठी","औंठी"],
+["अंगोछा","गमछा"], ["अंगार","अंगोर"], ["अकाल","दुर्भिक्ष"], ["अचानक","अनचोके"],
+["अकेला","एकसर"], ["अगला","अगिला"], ["अगाड़ी","आगा"], ["अगुवाई","अगुआई"],
+["अग्नि","आगि"], ["अग्निकांड","अगिलग्गी"], ["अंदर","भीतर"], ["अंदाज","अनुमान"],
+["अंदेशा","आशंका"], ["अंतिम","आखरी"], ["अंतर","भेद"], ["रुपयाक","रुपैयाक"],
+["ल","लए"], ["लऽ","लए"], ["कऽ","कए"], ["दऽ","दए"], ["भऽ","भए"], ["धूप","रौद"],
+["सिर","माथ"], ["हजारों","हजारो"], ["करोड़ों","करोड़ो"], ["सैकड़ों","सैकड़ो"],
+["त","तं"], ["अंतरराल","विराम"], ["IPS","आईपीएस"], ["IAS","आईएएस"], ["IG","आईजी"],
+["ADG","एडीजी"], ["CMO","सीएमओ"]
+];
+
+const inputNews=document.getElementById("inputNews");
+const outputNews=document.getElementById("outputNews");
+
+function replaceWholeWord(text,find,replace){
+const escaped=find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+return text.replace(
+new RegExp('(^|[^\\u0900-\\u097Fa-zA-Z0-9])'+escaped+'(?=[^\\u0900-\\u097Fa-zA-Z0-9]|$)','g'),
+m=>m.replace(find,replace)
+);
+}
+
+function processNews(){
+let text=inputNews.value;
+
+// १. सबसं पहिने 'सभ', 'कें', 'मे', 'सं', 'सँ' कए सटल रहला पर स्पेस दऽ कए अलग करब
+text = text.replace(/([\u0900-\u097F]+)सभ/g, '$1 सभ');
+text = text.replace(/([\u0900-\u097F]+)कें/g, '$1 कें');
+text = text.replace(/([\u0900-\u097F]+)केँ/g, '$1 कें');
+text = text.replace(/([\u0900-\u097F]+)मे/g, '$1 मे');
+text = text.replace(/([\u0900-\u097F]+)में/g, '$1 मे');
+text = text.replace(/([\u0900-\u097F]+)सं/g, '$1 सं');
+text = text.replace(/([\u0900-\u097F]+)सँ/g, '$1 सं');
+
+// २. सभ शब्दक सामान्य नियम (रूल्स एर्रे) कए रिप्लेस करब
+rules.forEach(rule=>{
+text=replaceWholeWord(text,rule[0],rule[1]);
+});
+
+// ३. देवनागरी अंक कए ऑटोमैटिक अंग्रेजी अंक में बदलब
+const numMap = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
+text = text.replace(/[०-९]/g, m => numMap[m]);
+
+// ४. रैंकिंग/पोजीशन कए मैथिली स्टाइल में बदलब (जैसे: 47वां -> 47म)
+text = text.replace(/(\d+)\s*(वां|वें|वी|वा)/g, '$1म');
+
+// ५. ऑटोमैटिक अनुस्वार नियम (केन्द्र -> केंद्र, सम्भव -> संभव)
+text = text.replace(/म्([पफबभम])/g, 'ं$1');
+
+// [सुधरल लॉजिक]: ई खाली ओहि 'न्' कए अनुस्वार करत जकर बाद 'त,थ,द,ध' आबय। 
+// जदि बाद में खुद 'न' आबय (जैसे: विभिन्न, उत्पन्न, संपन्न), त ओकरा छुएतौ नहि।
+text = text.replace(/न्([तथदध])/g, 'ं$1'); 
+
+text = text.replace(/ण्([टठडढण])/g, 'ं$1');
+
+// ६. चंद्रबिंदु हटा कए अनुस्वार करब
+text = text.replace(/ँ/g, "ं");
+
+outputNews.value=text;
+updateStats();
+}
+
+function updateStats() {
+    let inText = inputNews.value.trim();
+    let inWords = inText === "" ? 0 : inText.split(/\s+/).length;
+    let inChars = inText.length;
+    document.getElementById("inputStats").innerText = `शब्द: ${inWords} | अक्षर: ${inChars}`;
+
+    let outText = outputNews.value.trim();
+    let outWords = outText === "" ? 0 : outText.split(/\s+/).length;
+    let outChars = outText.length;
+    document.getElementById("outputStats").innerText = `शब्द: ${outWords} | अक्षर: ${outChars}`;
+}
+
+inputNews.addEventListener("input", updateStats);
+outputNews.addEventListener("input", updateStats);
+
+document.getElementById("correctBtn").addEventListener("click",processNews);
+
+document.getElementById("copyBtn")
+.addEventListener("click",()=>{
+navigator.clipboard.writeText(outputNews.value);
+alert("Copied");
+});
+
+function saveNews(){
+let news=outputNews.value.trim();
+if(news===""){ alert("पहिने समाचार सुधारू"); return; }
+let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+if(savedNews.includes(news)){ alert("ई समाचार पहिनेसं सेव अछि"); return; }
+savedNews.unshift(news);
+localStorage.setItem("savedNews",JSON.stringify(savedNews));
+loadSavedNews();
+}
+
+document.getElementById("saveBtn").addEventListener("click",saveNews);
+
+function loadSavedNews(){
+let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+let html="";
+savedNews.forEach((news,index)=>{
+html+=`<div><b>News ${index+1}</b> <button onclick="openNews(${index})">Open</button> <button onclick="deleteSavedNews(${index})">Delete</button></div>`;
+});
+document.getElementById("savedNewsList").innerHTML=html;
+updateCounts();
+}
+
+function openNews(index){
+let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+outputNews.value=savedNews[index];
+updateStats();
+}
+
+function deleteSavedNews(index){
+let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+savedNews.splice(index,1);
+localStorage.setItem("savedNews",JSON.stringify(savedNews));
+loadSavedNews();
+}
+
+document.getElementById("clearBtn")
+.addEventListener("click",()=>{
+inputNews.value="";
+outputNews.value="";
+updateStats();
+});
+
+let customRules=JSON.parse(localStorage.getItem("customRules")||"[]");
+customRules.forEach(rule=>{ rules.push(rule); });
+
+document.getElementById("addRuleBtn")
+.addEventListener("click",()=>{
+let oldWord=document.getElementById("oldWord").value.trim();
+let newWord=document.getElementById("newWord").value.trim();
+if(!oldWord||!newWord){ alert("दुनू शब्द भरू"); return; }
+rules.push([oldWord,newWord]);
+customRules.push([oldWord,newWord]);
+localStorage.setItem("customRules",JSON.stringify(customRules));
+showRules();
+document.getElementById("oldWord").value="";
+document.getElementById("newWord").value="";
+});
+
+function showRules(){
+let html="";
+customRules.forEach((rule,index)=>{
+html+=`<div>${rule[0]} ➜ ${rule[1]} <button onclick="deleteRule(${index})">Delete</button></div>`;
+});
+document.getElementById("ruleList").innerHTML=html;
+}
+
+function deleteRule(index){
+customRules.splice(index,1);
+localStorage.setItem("customRules",JSON.stringify(customRules));
+location.reload();
+}
+
+function updateCounts(){
+let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+document.getElementById("countBox").innerHTML="Rules : "+customRules.length+" | Saved News : "+savedNews.length;
+}
+
+setInterval(()=>{
+localStorage.setItem("draftNews",inputNews.value);
+},5000);
+
+window.addEventListener("load",()=>{
+let draft=localStorage.getItem("draftNews");
+if(draft){ inputNews.value=draft; }
+showRules();
+loadSavedNews();
+updateStats();
+});
+</script>
+</body>
+</html>
 margin-bottom:10px;
 border:1px solid #ccc;
 border-radius:6px;
