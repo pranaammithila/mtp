@@ -2,22 +2,26 @@
 <html lang="mai">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>मैथिली समाचार शोधक टूल</title>
 <style>
-body{
-font-family:Arial,sans-serif;
-background:#f5f5f5;
-padding:15px;
+body {
+font-family: Arial, sans-serif;
+background: #f5f5f5;
+padding: 10px;
+margin: 0;
+box-sizing: border-box;
 }
 
-.box{
-background:#fff;
-padding:15px;
-margin-bottom:15px;
-border-radius:8px;
-box-shadow:0 1px 5px rgba(0,0,0,.1);
+.box {
+background: #fff;
+padding: 15px;
+margin-bottom: 15px;
+border-radius: 8px;
+box-shadow: 0 1px 5px rgba(0,0,0,.1);
 }
 
+/* ग्रिड बॉक्स जो मोबाइल पर सिंगल कॉलम और डेस्कटॉप पर डबल कॉलम होगा */
 .grid-box {
 display: grid;
 grid-template-columns: 1fr 1fr;
@@ -25,50 +29,76 @@ gap: 15px;
 }
 
 @media(max-width: 768px) {
-.grid-box { grid-template-columns: 1fr; }
+.grid-box { 
+grid-template-columns: 1fr; 
+gap: 10px;
+}
+textarea {
+height: 180px !important; /* मोबाइल पर बॉक्स की हाइट कनी कम ताकि स्क्रॉल न करना पड़े */
+}
 }
 
-textarea{
-width:100%;
-height:250px;
-padding:10px;
-font-size:18px;
-border:1px solid #ccc;
-border-radius:6px;
-box-sizing:border-box;
+textarea {
+width: 100%;
+height: 250px;
+padding: 10px;
+font-size: 18px;
+border: 1px solid #ccc;
+border-radius: 6px;
+box-sizing: border-box;
+resize: vertical;
 }
 
-input{
-width:100%;
-padding:10px;
-margin-bottom:10px;
-border:1px solid #ccc;
-border-radius:6px;
-box-sizing:border-box;
+input {
+width: 100%;
+padding: 12px;
+margin-bottom: 10px;
+border: 1px solid #ccc;
+border-radius: 6px;
+box-sizing: border-box;
+font-size: 16px;
 }
 
-button{
-padding:10px 15px;
-margin:3px;
-cursor:pointer;
-border:none;
-border-radius:5px;
-background:#0073aa;
-color:#fff;
+/* बटन ग्रुप जो मोबाइल पर ऑटो-रैप और टच-फ्रेंडली होगा */
+.btn-group {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
 }
 
-button:hover{
-background:#005f8d;
+button {
+padding: 12px 18px;
+flex: 1 1 auto; /* मोबाइल पर बटन स्पेस के हिसाब से खुद को एडजस्ट करेंगे */
+min-width: 80px;
+cursor: pointer;
+border: none;
+border-radius: 6px;
+background: #0073aa;
+color: #fff;
+font-size: 16px;
+font-weight: bold;
+text-align: center;
+touch-action: manipulation; /* मोबाइल टच रिस्पॉन्स को फ़ास्ट करने के लिए */
 }
 
-#savedNewsList div{
-padding:8px;
-border-bottom:1px solid #ddd;
+button:hover {
+background: #005f8d;
 }
 
-#countBox{
-margin-top:10px;
-font-weight:bold;
+#savedNewsList div {
+padding: 10px;
+border-bottom: 1px solid #ddd;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 5px;
+}
+
+#countBox {
+margin-top: 10px;
+font-weight: bold;
+font-size: 14px;
 }
 
 .live-counter {
@@ -78,58 +108,48 @@ margin-top: 5px;
 font-weight: bold;
 }
 
-/* फ़ोटो सेक्शन के लिए स्टाइलिंग */
-.image-preview-box {
-margin-top: 15px;
-max-width: 300px;
-max-height: 300px;
-display: none;
-border: 1px solid #ddd;
-border-radius: 6px;
-}
+/* फोटो और फाइंड-रिप्लेस सेक्शन को मोबाइल फ्रेंडली बनाना */
 .photo-flex, .find-replace-flex {
 display: flex;
-gap: 15px;
+flex-direction: column;
+gap: 10px;
+}
+
+@media(min-width: 600px) {
+.photo-flex, .find-replace-flex {
+flex-direction: row;
 align-items: center;
-flex-wrap: wrap;
 }
 .photo-flex input, .find-replace-flex input {
 width: auto;
 flex: 1;
 margin-bottom: 0;
 }
+}
+
 .photo-flex input[type="file"] {
 display: none;
 }
-.upload-btn {
-background: #2271b1;
+
+.image-preview-box {
+margin-top: 15px;
+width: 100%;
+max-width: 300px;
+height: auto;
+display: none;
+border: 1px solid #ddd;
+border-radius: 6px;
 }
-.download-btn {
-background: #46b450;
-}
-.download-btn:hover {
-background: #34963b;
-}
-.clear-img-btn {
-background: #dc3232;
-}
-.clear-img-btn:hover {
-background: #a82424;
-}
-.output-find-btn {
-background: #e14d43;
-}
-.output-find-btn:hover {
-background: #b53e36;
-}
-.clean-btn {
-background: #f0b84c;
-color: #000;
-font-weight: bold;
-}
-.clean-btn:hover {
-background: #dca334;
-}
+
+.upload-btn { background: #2271b1; }
+.download-btn { background: #46b450; }
+.download-btn:hover { background: #34963b; }
+.clear-img-btn { background: #dc3232; }
+.clear-img-btn:hover { background: #a82424; }
+.output-find-btn { background: #e14d43; }
+.output-find-btn:hover { background: #b53e36; }
+.clean-btn { background: #f0b84c; color: #000; }
+.clean-btn:hover { background: #dca334; }
 </style>
 </head>
 <body>
@@ -151,7 +171,7 @@ background: #dca334;
     </div>
 </div>
 
-<div class="box">
+<div class="box btn-group">
 <button id="correctBtn">सुधारू</button>
 <button class="clean-btn" id="cleanMarkdownBtn">Clean **</button>
 <button id="copyBtn">Copy</button>
@@ -194,7 +214,7 @@ const rules = [
 ["सँ","सं"], ["केँ","कें"], ["पानी","पानि"], ["कहलथिन","कहलनि"],
 ["while","जखनकि"], ["आज","आइ"], ["केवल","मात्र"], ["चौथा","चारिम"],["मिट्‌टी","माटि"],
 ["तीसरा","तेसर"], ["दूसरा","दोसर"], ["पांचवां","पांचम"], ["अब तक","एखन धरि"],
-["बड़ा","पैघ"], ["najar","नजरि"], ["आग","आगि"], ["मरीज","रोगी"], ["गिरा","खसल"],
+["बड़ा","पैघ"], ["नजर","नजरि"], ["आग","आगि"], ["मरीज","रोगी"], ["गिरा","खसल"],
 ["गिरे","खसल"], ["राहत","राहति"], ["बार-बार","बेर-बेर"], ["मिलल","भेटल"],
 ["ओर से","दिस सं"], ["सिर्फ","मात्र"], ["तालाब","पोखरि"], ["भ","भए"], ["सफेद","उजर"],
 ["मौसम","मौसिम"], ["मौसमक","मौसिमक"], ["बनाए","बना"], ["खिलाड़ी","खेलाड़ी"],["अनेक","कतेको"],
@@ -205,7 +225,7 @@ const rules = [
 ["सम्पन्नता","संपन्नता"], ["सम्प्रदाय","संप्रदाय"], ["सम्प्रेषण","संप्रेषण"], ["सम्पोषण","संपोषण"],
 ["सम्बन्ध","संबंध"], ["सम्बन्धित","सं संबंधित"], ["सम्बन्धी","संबंधी"], ["सम्बोधन","संबोधन"],
 ["सम्बल","संबल"], ["करि","कए"], ["जाएबापर", "गेला पर"], ["आरम्भ", "आरंभ"],
-["कएने", "केने"], ["जनआन्दोलन", "जनआंदोलन"], ["आन्दोलन", "आंदोलन"], ["अत्यन्त", "अत्यंत"],["कार्रवाई","कारबाइ"],
+["कएने", "केने"], ["जनआन्दोलन", "जनआ आंदोलन"], ["आन्दोलन", "आंदोलन"], ["अत्यन्त", "अत्यंत"],["कार्रवाई","कारबाइ"],
 ["सिन्दूर", "सिंदूर"], ["निरन्तर", "निरंतर"], ["महागठबन्धनक", "महागठबंधनक"],
 ["महागठबन्धन", "महागठबंधन"], ["गठबन्धन", " गठबंधन"], ["सम्भव","संभव"],
 ["सम्भावना","संभावना"], ["सम्भाल","संभाल"], ["सम्भवतः","संभवतः"], ["सम्भाषण","संभाषण"],
@@ -222,7 +242,7 @@ const rules = [
 ["समाप्त हुई","समापन भेल"], ["चौड़ी","चौड़ा"], ["पहुँचे","पहुंचल"], ["उपस्थित रहे","उपस्थित छलाह"],
 ["शामिल हुए","शामिल भेलाह"], ["दूसरी","दोसर"], ["दूसरे","दोसर"], ["तीसरी","तेसर"],
 ["तीसरे","तेसर"], ["चौथी","चारिम"], ["चौथे","चारिम"], ["पांचवीं","पांचम"],
-["पांचवें","पांचम"], ["बाढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"],
+["पांचवें","पांचम"], ["баढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"],
 ["लेकर","लए कए"], ["ले कर","लए कए"], ["सुनवाई","सुनवाइ"], ["दुकान","दोकान"],
 ["दुकानक","दोकानक"], ["दुकानकार","दोकानदार"], ["दुकानदारक","दोकानदारक"],
 ["खिलाफ","विरुद्ध"], ["मुकाबला","मोकाबला"], ["बीमार","बेमार"], ["बुखार","बोखार"],
@@ -252,7 +272,7 @@ m=>m.replace(find,replace)
 function processNews(){
 let text=inputNews.value;
 
-// १. सिर्फ डबल स्टार (**) कए हटाबय लेल, सिंगल स्टार (*) जेना Notout 45* सुरक्षित रहत
+// १. सिर्फ डबल स्टार (**) कए हटाबय लेल, सिंगल स्टार (*) सुरक्षित रहत
 text = text.replace(/\*\*(.*?)\*\*/g, '$1');
 
 // २. सटल शब्द सभ कए अलगे कए कए स्पेस देनाई (जैसे: भारतमे -> भारत मे)
@@ -261,7 +281,7 @@ text = text.replace(/([\u0900-\u097F]+)(कें|केँ)/g, '$1 कें');
 text = text.replace(/([\u0900-\u097F]+)(सं|सँ)/g, '$1 सं');
 text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)/g, '$1 सभ');
 
-// ३. विशिष्ट शब्दक बदलाव (धर्मेंद्र, मेंढक कए सुरक्षित रखैत सिर्फ स्वतंत्र शब्द बदलनाई)
+// ३. विशिष्ट शब्दक बदलाव (धर्मेंद्र, मेंढक कए सुरक्षित रखैत)
 text = text.replace(/\bमें\b/g, 'मे');
 text = text.replace(/\bदोनों\b/g, 'दूनू');
 text = text.replace(/सुबह/g, 'भोर');
@@ -275,7 +295,7 @@ text = text.replace(/\bको\b/g, '');
 // ५. चंद्रबिंदु (ँ) हटाबय लेल
 text = text.replace(/ँ/g, '');
 
-// ६. नियम आधारित सामान्य रिप्लेसमेंट (rules array सँ)
+// ६. नियम आधारित सामान्य रिप्लेसमेंट
 rules.forEach(rule=>{
 text=replaceWholeWord(text,rule[0],rule[1]);
 });
@@ -287,7 +307,7 @@ text = text.replace(/\s+क(?=\s|$)/g, 'क');
 const numMap = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
 text = text.replace(/[०-९]/g, m => numMap[m]);
 
-// ९. अंकक बाद 'म' क नियम (जैसे: 47 म या 47 वां -> 47म, कामेश्वर सुरक्षित)
+// ९. अंकक बाद 'म' क नियम (जैसे: 47 म -> 47म)
 text = text.replace(/(\d+)\s*(वां|वें|वी|वा|म)(?=\s|$)/g, '$1म');
 
 // १०. बाकी व्याकरणिक अनुस्वार नियम
@@ -312,7 +332,6 @@ function updateStats() {
     document.getElementById("outputStats").innerText = `शब्द: ${outWords} | अक्षर: ${outChars}`;
 }
 
-// ऑटो-करेक्ट लेल इवेंट
 inputNews.addEventListener("input", function() {
     processNews();
 });
@@ -320,15 +339,12 @@ outputNews.addEventListener("input", updateStats);
 
 document.getElementById("correctBtn").addEventListener("click",processNews);
 
-// Clean ** बटन क फंक्शन (सिर्फ डबल स्टार हटाएत)
 document.getElementById("cleanMarkdownBtn").addEventListener("click", function() {
     inputNews.value = inputNews.value.replace(/\*\*(.*?)\*\*/g, '$1');
     processNews();
 });
 
-// Copy बटन क फंक्शन (बिना कोनो alert रुकावट कए सीधे कॉपी होएत)
-document.getElementById("copyBtn")
-.addEventListener("click",()=>{
+document.getElementById("copyBtn").addEventListener("click",()=>{
 navigator.clipboard.writeText(outputNews.value);
 });
 
@@ -348,7 +364,7 @@ function loadSavedNews(){
 let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
 let html="";
 savedNews.forEach((news,index)=>{
-html+=`<div><b>News ${index+1}</b> <button onclick="openNews(${index})">Open</button> <button onclick="deleteSavedNews(${index})">Delete</button></div>`;
+html+=`<div><b>News ${index+1}</b> <div><button onclick="openNews(${index})">Open</button> <button onclick="deleteSavedNews(${index})">Delete</button></div></div>`;
 });
 document.getElementById("savedNewsList").innerHTML=html;
 updateCounts();
@@ -367,8 +383,7 @@ localStorage.setItem("savedNews",JSON.stringify(savedNews));
 loadSavedNews();
 }
 
-document.getElementById("clearBtn")
-.addEventListener("click",()=>{
+document.getElementById("clearBtn").addEventListener("click",()=>{
 inputNews.value="";
 outputNews.value="";
 updateStats();
@@ -377,8 +392,7 @@ updateStats();
 let customRules=JSON.parse(localStorage.getItem("customRules")||"[]");
 customRules.forEach(rule=>{ rules.push(rule); });
 
-document.getElementById("addRuleBtn")
-.addEventListener("click",()=>{
+document.getElementById("addRuleBtn").addEventListener("click",()=>{
 let oldWord=document.getElementById("oldWord").value.trim();
 let newWord=document.getElementById("newWord").value.trim();
 if(!oldWord||!newWord){ alert("दुनू शब्द भरू"); return; }
@@ -393,7 +407,7 @@ document.getElementById("newWord").value="";
 function showRules(){
 let html="";
 customRules.forEach((rule,index)=>{
-html+=`<div>${rule[0]} ➜ ${rule[1]} <button onclick="deleteRule(${index})">Delete</button></div>`;
+html+=`<div><span>${rule[0]} ➜ ${rule[1]}</span> <button onclick="deleteRule(${index})">Delete</button></div>`;
 });
 document.getElementById("ruleList").innerHTML=html;
 }
@@ -516,4 +530,4 @@ updateStats();
 });
 </script>
 </body>
-            </html>
+</html>
