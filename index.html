@@ -122,6 +122,14 @@ background: #e14d43;
 .output-find-btn:hover {
 background: #b53e36;
 }
+.clean-btn {
+background: #f0b84c;
+color: #000;
+font-weight: bold;
+}
+.clean-btn:hover {
+background: #dca334;
+}
 </style>
 </head>
 <body>
@@ -145,6 +153,7 @@ background: #b53e36;
 
 <div class="box">
 <button id="correctBtn">सुधारू</button>
+<button class="clean-btn" id="cleanMarkdownBtn">Clean **</button>
 <button id="copyBtn">Copy</button>
 <button id="saveBtn">Save</button>
 <button id="clearBtn">Clear</button>
@@ -182,13 +191,13 @@ background: #b53e36;
 
 <script>
 const rules = [
-["सँ","सं"], ["केँ","कें"], ["में","मे"], ["पानी","पानि"], ["कहलथिन","कहलनि"],
-["while","जखनकि"], ["आज","आइ"], ["सुबह","भोर"], ["केवल","मात्र"], ["चौथा","चारिम"],["मिट्‌टी","माटि"],
+["सँ","सं"], ["केँ","कें"], ["पानी","पानि"], ["कहलथिन","कहलनि"],
+["while","जखनकि"], ["आज","आइ"], ["केवल","मात्र"], ["चौथा","चारिम"],["मिट्‌टी","माटि"],
 ["तीसरा","तेसर"], ["दूसरा","दोसर"], ["पांचवां","पांचम"], ["अब तक","एखन धरि"],
 ["बड़ा","पैघ"], ["नजर","नजरि"], ["आग","आगि"], ["मरीज","रोगी"], ["गिरा","खसल"],
 ["गिरे","खसल"], ["राहत","राहति"], ["बार-बार","बेर-बेर"], ["मिलल","भेटल"],
 ["ओर से","दिस सं"], ["सिर्फ","मात्र"], ["तालाब","पोखरि"], ["भ","भए"], ["सफेद","उजर"],
-["मौसम","मौसिम"], ["मौसमक","मौसिमक"], ["बनाए","बना"], ["खिलाड़ी","खेलाड़ी"],["अनेक","कतेको"],
+["मौसम","मौसिम"], ["मौसमक","मौसिमक"], ["बनाए","बना"], ["खिलाड़ी","खेलाड़ी"],["अनेक","कते코"],
 ["खिलाड़ीक","खेलाड़ीक"], ["बेहतर","नीक"], ["संभाललनि","संभारलनि"],
 ["मुकाबलाक","मोकाबलाक"], ["दिलौलनि","दियौलनि"], ["तऽ","तं"], ["होएेत","होयत"],
 ["होएला","भेला"], ["फैलैत","पसरैत"], ["लाखों","लाखो"], ["सम्पूर्ण","संपूर्ण"],["फैलल","पसरल"],
@@ -204,16 +213,16 @@ const rules = [
 ["ओर सं","दिस सं"], ["वाला","बला"], ["तहत","intent"], ["जल्द","शीघ्र"],["आगाँ","आगू"],
 ["विश्वभर","विश्वभरि"], ["देशभर","देशभरि"], ["हुनकें","हुनका"], ["काफी","बहुत"],
 ["घाम","रौद"], ["वर्षा","बरखा"], ["रुपया","रुपैया"], ["खड़ा","ठाढ़"],
-["नुकсан","नोकसान"], ["पौधा","गाछ"], ["रख","राखि"], ["बड़ी","पैघ"],
+["nuksan","नोकसान"], ["पौधा","गाछ"], ["रख","राखि"], ["बड़ी","पैघ"],
 ["बड़े","पैघ"], ["वाले","बला"], ["सबसे","सबसं"], ["शाम","सांझ"], ["संझा","सांझ"],
-["गुरुवार","बृहस्पति"], ["सोमवार","सोम"], ["मंगलवार","मंगल"], ["बुध्रवार","बुध"],
+["सोमवार","सोम"], ["मंगलवार","मंगल"], ["बुध्रवार","बुध"],
 ["शुक्रवार","शुक्र"], ["शनिवार","शनि"], ["रविवार","रवि"], ["निर्देश दिया","निर्देश देलनि"],
 ["समीक्षा की","समीक्षा कएलनि"], ["मांग की","मांग राखल गेल"], ["निर्णय लिया","निर्णय लेल गेल"],
 ["शुरू हुआ","शुरुआत भेल"], ["शुरू हुई","शुरुआत भेल"], ["समाप्त हुआ","समापन भेल"],
 ["समाप्त हुई","समापन भेल"], ["चौड़ी","चौड़ा"], ["पहुँचे","पहुंचल"], ["उपस्थित रहे","उपस्थित छलाह"],
 ["शामिल हुए","शामिल भेलाह"], ["दूसरी","दोसर"], ["दूसरे","दोसर"], ["तीसरी","तेसर"],
 ["तीसरे","तेसर"], ["चौथी","चारिम"], ["चौथे","चारिम"], ["पांचवीं","पांचम"],
-["पांचवें","पांचम"], ["बाढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"],
+["पांचवें","पांचम"], ["баढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"],
 ["लेकर","लए कए"], ["ले कर","लए कए"], ["सुनवाई","सुनवाइ"], ["दुकान","दोकान"],
 ["दुकानक","दोकानक"], ["दुकानकार","दोकानदार"], ["दुकानदारक","दोकानदारक"],
 ["खिलाफ","विरुद्ध"], ["मुकाबला","मोकाबला"], ["बीमार","बेमार"], ["बुखार","बोखार"],
@@ -243,31 +252,52 @@ m=>m.replace(find,replace)
 function processNews(){
 let text=inputNews.value;
 
+// सिर्फ डबल स्टार (**) कए हटाबय लेल, सिंगल स्टार (*) जेना नॉटआउट 45* सुरक्षित रहत
+text = text.replace(/\*\*(.*?)\*\*/g, '$1');
+
+// शुरुआत आर अंत मे स्पेस
+text = ' ' + text + ' ';
+
+// १. विशिष्ट शब्दक बदलाव (सुरक्षित रूप सँ - धर्मेंद्र आर कामेश्वर सुरक्षित रहत)
+text = text.replace(/ में /g, ' मे ');
+text = text.replace(/ में/g, ' मे'); 
+text = text.replace(/ दोनों /g, ' दूनू ');
+text = text.replace(/सुबह/g, 'भोर');
+text = text.replace(/गुरुवार/g, 'बृहस्पति');
+text = text.replace(/NHAI/g, 'एनएचएआई');
+text = text.replace(/लय कऽ/g, 'लए कए');
+
+// २. 'को' कए स्वतंत्र रूप सँ हटाबय लेल
+text = text.replace(/ को /g, ' ');
+
+// ३. चंद्रबिंदु (ँ) हटाबय लेल
+text = text.replace(/ँ/g, '');
+
+// ४. 'सभ' वाला नियम
 text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)/g, '$1 सभ');
 
-text = text.replace(/([\u0900-\u097F]+)कें/g, '$1 कें');
-text = text.replace(/([\u0900-\u097F]+)केँ/g, '$1 कें');
-text = text.replace(/([\u0900-\u097F]+)मे/g, '$1 मे');
-text = text.replace(/([\u0900-\u097F]+)में/g, '$1 मे');
-text = text.replace(/([\u0900-\u097F]+)सं/g, '$1 सं');
-text = text.replace(/([\u0900-\u097F]+)सँ/g, '$1 सं');
-
+// ५. नियम आधारित सामान्य रिप्लेसमेंट
 rules.forEach(rule=>{
 text=replaceWholeWord(text,rule[0],rule[1]);
 });
 
+// ६. 'क' कए पहिलुका शब्द सँ जोड़ब
+text = text.replace(/\s+क(?=\s|$)/g, 'क');
+
+// ७. अंग्रेजी अंक मे बदलाव
 const numMap = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
 text = text.replace(/[०-९]/g, m => numMap[m]);
 
-text = text.replace(/(\d+)\s*(वां|वें|वी|वा)/g, '$1म');
+// ८. अंकक बाद 'म' क नियम
+text = text.replace(/(\d+)\s*(वां|वें|वी|वा|म)(?=\s|$)/g, '$1म');
 
+// ९. बाकी व्याकरणिक अनुस्वार नियम
 text = text.replace(/म्([पफबभ])/g, 'ं$1'); 
 text = text.replace(/न्([तथदध])/g, 'ं$1'); 
 text = text.replace(/ण्([टठडढण])/g, 'ं$1');
 
-text = text.replace(/ँ/g, "ं");
-
-outputNews.value=text;
+// एक्स्ट्रा डबल स्पेस हटा कए ट्रिम करब
+outputNews.value = text.replace(/ {2,}/g, ' ').trim();
 updateStats();
 }
 
@@ -283,15 +313,25 @@ function updateStats() {
     document.getElementById("outputStats").innerText = `शब्द: ${outWords} | अक्षर: ${outChars}`;
 }
 
-inputNews.addEventListener("input", updateStats);
+// ऑटो-करेक्ट लेल इवेंट
+inputNews.addEventListener("input", function() {
+    processNews();
+});
 outputNews.addEventListener("input", updateStats);
 
 document.getElementById("correctBtn").addEventListener("click",processNews);
 
+// Clean ** बटन क फंक्शन (सिर्फ डबल स्टार हटाएत)
+document.getElementById("cleanMarkdownBtn").addEventListener("click", function() {
+    inputNews.value = inputNews.value.replace(/\*\*(.*?)\*\*/g, '$1');
+    processNews();
+});
+
+// Copy बटन क फंक्शन (अब alert बला "OK" पॉप-अप नहि आबएत)
 document.getElementById("copyBtn")
 .addEventListener("click",()=>{
 navigator.clipboard.writeText(outputNews.value);
-alert("Copied");
+// alert("Copied"); <-- एकरा हटा देल गेल अछि ताकि रुकावट नहि होए
 });
 
 function saveNews(){
@@ -382,7 +422,7 @@ document.getElementById("replaceOutputBtn").addEventListener("click", function()
         return;
     }
     
-    // पूरे शब्द को आउटपुट टेक्स्ट एरिया में बदलना
+    // पूरे शब्द को आउटपुट टेक्स्टエリア में बदलना
     outputNews.value = replaceWholeWord(outText, findWord, replaceWord);
     updateStats();
     
@@ -481,50 +521,5 @@ loadSavedNews();
 updateStats();
 });
 </script>
-<script>
-function applyMaithiliRules(text) {
-    if (!text) return '';
-
-    // शुरुआत आर अंत मे एकटा स्पेस जोड़ि दएब ताकि वाक्यक पहिल आर आखिरी शब्द भी स्पेस क दायरा मे आबि जाए
-    let modifiedText = ' ' + text + ' ';
-
-    // 1. सिर्फ स्वतंत्र 'में' कए 'मे' मे बदलनाई
-    modifiedText = modifiedText.replace(/ में /g, ' मे ');
-
-    // 2. सिर्फ स्वतंत्र 'दोनों' कए 'दूनू' मे बदलनाई
-    modifiedText = modifiedText.replace(/ दोनों /g, ' दूनू ');
-
-    // 3. बाकी शब्दक बदलाव
-    modifiedText = modifiedText
-        .replace(/सुबह/g, 'भोर')
-        .replace(/गुरुवार/g, 'बृहस्पति')
-        .replace(/NHAI/g, 'एनएचएआई')
-        .replace(/लय कऽ/g, 'लए कए');
-
-    // 4. सिर्फ स्वतंत्र 'को' कए हटाबय लेल
-    modifiedText = modifiedText.replace(/ को /g, ' '); 
-
-    // 5. चंद्रबिंदु (ँ) हटाबय लेल
-    modifiedText = modifiedText.replace(/ँ/g, '');
-
-    // 6. 'क' कए पहिलुका शब्द सँ जोड़ब
-    modifiedText = modifiedText.replace(/\s+क(?=\s|$)/g, 'क');
-
-    // 7. अंकक बाद 'म' क नियम (যেমন: 47 म -> 47म)
-    modifiedText = modifiedText.replace(/(\d+)\s*म(?=\s|$)/g, '$1म');
-
-    // 8. शुरू आर अंत क एक्स्ट्रा स्पेस हटा कए ओरिजinal फॉर्मेट मे लाबब
-    return modifiedText.replace(/ {2,}/g, ' ').trim();
-}
-
-// उदाहरण: जब अहाँक इनपुट बॉक्स (textarea) मे कुछ लिखल जाए
-document.getElementById('inputTextBoxId').addEventListener('input', function(e) {
-    let inputText = e.target.value;
-    let outputText = applyMaithiliRules(inputText);
-    document.getElementById('outputTextBoxId').value = outputText;
-});
-</script>
-    
-    
 </body>
-</html>
+        </html>
