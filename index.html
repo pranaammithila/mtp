@@ -285,14 +285,14 @@ m=>m.replace(find,replace)
 function processNews(){
 let text=inputNews.value;
  
-// १. सिर्फ डबल स्टार (**) कए हटाबय लेल, सिंगल स्टार (*) सुरक्षित रहत
+// १. सिर्फ डबल स्टार (**) कए हटाबय लेल, SINGLE स्टार (*) सुरक्षित रहत
 text = text.replace(/\*\*(.*?)\*\*/g, '$1');
  
-// २. सटल शब्दसभ कए अलगे क कए स्पेस देनाई (सिर्फ शब्दक अंत मे \b क साथ ताकि रामेश्वर सुरक्षित रहय)
-text = text.replace(/([\u0900-\u097F]+)(मे|में)\b/g, '$1 मे');
-text = text.replace(/([\u0900-\u097F]+)(कें|केँ)\b/g, '$1 कें');
-text = text.replace(/([\u0900-\u097F]+)(सं|सँ)\b/g, '$1 सं');
-text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)\b/g, '$1 सभ');
+// २. सटल शब्दसभ कए अलगे क कए स्पेस देनाई (सिर्फ शब्दक अंत मे - रामेश्वर सुरक्षित रहत)
+text = text.replace(/([\u0900-\u097F]+)(मे|में)(?=\s|$)/g, '$1 मे');
+text = text.replace(/([\u0900-\u097F]+)(कें|केँ)(?=\s|$)/g, '$1 कें');
+text = text.replace(/([\u0900-\u097F]+)(सं|सँ)(?=\s|$)/g, '$1 सं');
+text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)(?=\s|$)/g, '$1 सभ');
  
 // ३. विशिष्ट शब्दक बदलाव (धर्मेंद्र, मेंढक कए सुरक्षित रखैत)
 text = text.replace(/\bमें\b/g, 'मे');
@@ -331,8 +331,56 @@ text = text.replace(/ण्([टठडढण])/g, 'ं$1');
 // एक्स्ट्रा डबल स्पेस हटा कए ट्रिम करब
 outputNews.value = text.replace(/ {2,}/g, ' ').trim();
 updateStats();
-}
+}function processNews(){
+let text=inputNews.value;
  
+// १. सिर्फ डबल स्टार (**) कए हटाबय लेल, SINGLE स्टार (*) सुरक्षित रहत
+text = text.replace(/\*\*(.*?)\*\*/g, '$1');
+ 
+// २. सटल शब्दसभ कए अलगे क कए स्पेस देनाई (सिर्फ शब्दक अंत मे - रामेश्वर सुरक्षित रहत)
+text = text.replace(/([\u0900-\u097F]+)(मे|में)(?=\s|$)/g, '$1 मे');
+text = text.replace(/([\u0900-\u097F]+)(कें|केँ)(?=\s|$)/g, '$1 कें');
+text = text.replace(/([\u0900-\u097F]+)(सं|सँ)(?=\s|$)/g, '$1 सं');
+text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)(?=\s|$)/g, '$1 सभ');
+ 
+// ३. विशिष्ट शब्दक बदलाव (धर्मेंद्र, मेंढक कए सुरक्षित रखैत)
+text = text.replace(/\bमें\b/g, 'मे');
+text = text.replace(/\bदोनों\b/g, 'दूनू');
+text = text.replace(/सुबह/g, 'भोर');
+text = text.replace(/गुरुवार/g, 'बृहस्पति');
+text = text.replace(/NHAI/g, 'एनएचएआई');
+text = text.replace(/लयकऽ/g, 'लए कए');
+ 
+// ४. 'को' कए स्वतंत्र रूप सँ हटाबय लेल
+text = text.replace(/\bको\b/g, '');
+ 
+// ५. चंद्रबिंदु (ँ) हटाबय लेल
+text = text.replace(/ँ/g, '');
+ 
+// ६. नियम आधारित सामान्य रिप्लेसमेंट
+rules.forEach(rule=>{
+text=replaceWholeWord(text,rule[0],rule[1]);
+});
+ 
+// ७. 'क' कए पहिलुका शब्द सँ जोड़ब
+text = text.replace(/\s+क(?=\s|$)/g, 'क');
+ 
+// ८. अंग्रेजी अंक मे बदलाव
+const numMap = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
+text = text.replace(/[०-९]/g, m => numMap[m]);
+ 
+// ९. अंकक बाद 'म' क नियम (जैसे: 47 म -> 47म)
+text = text.replace(/(\d+)\s*(वां|वें|वी|वा|म)(?=\s|$)/g, '$1म');
+ 
+// १०. बाकी व्याकरणिक अनुस्वार नियम
+text = text.replace(/म्([पफबभ])/g, 'ं$1'); 
+text = text.replace(/न्([तथदध])/g, 'ं$1'); 
+text = text.replace(/ण्([टठडढण])/g, 'ं$1');
+ 
+// एक्स्ट्रा डबल स्पेस हटा कए ट्रिम करब
+outputNews.value = text.replace(/ {2,}/g, ' ').trim();
+updateStats();
+} 
 function updateStats() {
     let inText = inputNews.value.trim();
     let inWords = inText === "" ? 0 : inText.split(/\s+/).length;
