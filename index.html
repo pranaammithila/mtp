@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>मैथिली समाचार शोधक टूल</title>
+<title>मैथिलीसमाचार शोधक टूल</title>
 <style>
 body {
 font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@ padding: 10px;
 margin: 0;
 box-sizing: border-box;
 }
-
+ 
 .box {
 background: #fff;
 padding: 15px;
@@ -20,24 +20,24 @@ margin-bottom: 15px;
 border-radius: 8px;
 box-shadow: 0 1px 5px rgba(0,0,0,.1);
 }
-
-/* ग्रिड बॉक्स जो मोबाइल पर सिंगल कॉलम और डेस्कटॉप पर डबल कॉलम होगा */
+ 
+/* ग्रिड बॉक्स जो मोबाइलपर सिंगल कॉलमऔर डेस्कटॉप परडबल कॉलम होगा */
 .grid-box {
 display: grid;
 grid-template-columns: 1fr 1fr;
 gap: 15px;
 }
-
+ 
 @media(max-width: 768px) {
 .grid-box { 
 grid-template-columns: 1fr; 
 gap: 10px;
 }
 textarea {
-height: 180px !important; /* मोबाइल पर बॉक्स की हाइट कनी कम ताकि स्क्रॉल न करना पड़े */
+height: 180px !important; /* मोबाइलपर बॉक्स कीहाइट कनी कमताकि स्क्रॉल नकरना पड़े */
 }
 }
-
+ 
 textarea {
 width: 100%;
 height: 250px;
@@ -48,7 +48,7 @@ border-radius: 6px;
 box-sizing: border-box;
 resize: vertical;
 }
-
+ 
 input {
 width: 100%;
 padding: 12px;
@@ -58,17 +58,17 @@ border-radius: 6px;
 box-sizing: border-box;
 font-size: 16px;
 }
-
-/* बटन ग्रुप जो मोबाइल पर ऑटो-रैप और टच-फ्रेंडली होगा */
+ 
+/* बटन ग्रुप जो मोबाइलपर ऑटो-रैपऔर टच-फ्रेंडलीहोगा */
 .btn-group {
 display: flex;
 flex-wrap: wrap;
 gap: 8px;
 }
-
+ 
 button {
 padding: 12px 18px;
-flex: 1 1 auto; /* मोबाइल पर बटन स्पेस के हिसाब से खुद को एडजस्ट करेंगे */
+flex: 1 1 auto; /* मोबाइलपर बटन स्पेसके हिसाब सेखुद को एडजस्टकरेंगे */
 min-width: 80px;
 cursor: pointer;
 border: none;
@@ -78,13 +78,13 @@ color: #fff;
 font-size: 16px;
 font-weight: bold;
 text-align: center;
-touch-action: manipulation; /* मोबाइल टच रिस्पॉन्स को फ़ास्ट करने के लिए */
+touch-action: manipulation; /* मोबाइल टचरिस्पॉन्स को फ़ास्टकरने के लिए */
 }
-
+ 
 button:hover {
 background: #005f8d;
 }
-
+ 
 #savedNewsList div {
 padding: 10px;
 border-bottom: 1px solid #ddd;
@@ -94,27 +94,27 @@ align-items: center;
 flex-wrap: wrap;
 gap: 5px;
 }
-
+ 
 #countBox {
 margin-top: 10px;
 font-weight: bold;
 font-size: 14px;
 }
-
+ 
 .live-counter {
 font-size: 14px;
 color: #555;
 margin-top: 5px;
 font-weight: bold;
 }
-
-/* फोटो और फाइंड-रिप्लेस सेक्शन को मोबाइल फ्रेंडली बनाना */
+ 
+/* फोटो और फाइंड-रिप्लेस सेक्शन कोमोबाइल फ्रेंडली बनाना */
 .photo-flex, .find-replace-flex {
 display: flex;
 flex-direction: column;
 gap: 10px;
 }
-
+ 
 @media(min-width: 600px) {
 .photo-flex, .find-replace-flex {
 flex-direction: row;
@@ -126,11 +126,11 @@ flex: 1;
 margin-bottom: 0;
 }
 }
-
+ 
 .photo-flex input[type="file"] {
 display: none;
 }
-
+ 
 .image-preview-box {
 margin-top: 15px;
 width: 100%;
@@ -140,7 +140,7 @@ display: none;
 border: 1px solid #ddd;
 border-radius: 6px;
 }
-
+ 
 .upload-btn { background: #2271b1; }
 .download-btn { background: #46b450; }
 .download-btn:hover { background: #34963b; }
@@ -153,13 +153,13 @@ border-radius: 6px;
 </style>
 </head>
 <body>
-
+ 
 <div class="box">
 <input id="oldWord" type="text" placeholder="पुरान शब्द">
 <input id="newWord" type="text" placeholder="नव शब्द">
 <button id="addRuleBtn">Add Rule</button>
 </div>
-
+ 
 <div class="grid-box">
     <div class="box">
         <textarea id="inputNews" placeholder="एतय समाचार पेस्ट करू"></textarea>
@@ -170,7 +170,7 @@ border-radius: 6px;
         <div id="outputStats" class="live-counter">शब्द: 0 | अक्षर: 0</div>
     </div>
 </div>
-
+ 
 <div class="box btn-group">
 <button id="correctBtn">सुधारू</button>
 <button class="clean-btn" id="cleanMarkdownBtn">Clean **</button>
@@ -178,7 +178,7 @@ border-radius: 6px;
 <button id="saveBtn">Save</button>
 <button id="clearBtn">Clear</button>
 </div>
-
+ 
 <div class="box">
 <h3>Find & Replace in Output Box (सुधारल समाचार में बदलो)</h3>
 <div class="find-replace-flex">
@@ -187,7 +187,7 @@ border-radius: 6px;
 <button class="output-find-btn" id="replaceOutputBtn">Replace All</button>
 </div>
 </div>
-
+ 
 <div class="box">
 <h3>Photo Converter Tools</h3>
 <div class="photo-flex">
@@ -199,7 +199,7 @@ border-radius: 6px;
 </div>
 <img id="imagePreview" class="image-preview-box" alt="Preview">
 </div>
-
+ 
 <div class="box">
 <h3>Custom Rules</h3>
 <div id="ruleList"></div>
@@ -208,42 +208,51 @@ border-radius: 6px;
 <div id="savedNewsList"></div>
 <div id="countBox"></div>
 </div>
-
+ 
 <script>
 const rules = [
 ["सँ","सं"], ["केँ","कें"], ["पानी","पानि"], ["कहलथिन","कहलनि"],
-["while","जखनकि"], ["आज","आइ"], ["केवल","मात्र"], ["चौथा","चारिम"],["मिट्‌टी","माटि"],
+["जबकि","जखनकि"],
+["आज","आइ"], ["केवल","मात्र"], ["चौथा","चारिम"],["मिट्टी","माटि"],
 ["तीसरा","तेसर"], ["दूसरा","दोसर"], ["पांचवां","पांचम"], ["अब तक","एखन धरि"],
-["बड़ा","पैघ"], ["नजर","नजरि"], ["आग","आगि"], ["मरीज","रोगी"], ["गिरा","खसल"],
-["गिरे","खसल"], ["राहत","राहति"], ["बार-बार","बेर-बेर"], ["मिलल","भेटल"],
-["ओर से","दिस सं"], ["सिर्फ","मात्र"], ["तालाब","पोखरि"], ["भ","भए"], ["सफेद","उजर"],
-["मौसम","मौसिम"], ["मौसमक","मौसिमक"], ["बनाए","बना"], ["खिलाड़ी","खेलाड़ी"],["अनेक","कतेको"],
+["बड़ा","पैघ"], ["नजर","नजरि"], ["आग","आगि"], ["मरीज़","रोगी"], ["मरीज","रोगी"], ["गिरा","खसल"],
+["गिरे","खसल"], ["राहत","राहति"], ["बार-बार","बेर-बेर"],
+["मिलल","भेटल"],
+["ओर से","दिस सं"],
+["सिर्फ","मात्र"], ["तालाब","पोखरि"], ["भ","भए"], ["सफेद","उजर"],
+["मौसम","मौसिम"], ["मौसमक","मौसिमक"], ["बनाए","ब बना"], ["खिलाड़ी","खेलाड़ी"],["अनेक","कतेको"],
 ["खिलाड़ीक","खेलाड़ीक"], ["बेहतर","नीक"], ["संभाललनि","संभारलनि"],
-["मुकाबलाक","मोकाबलाक"], ["दिलौलनि","दियौलनि"], ["तऽ","तं"], ["होएेत","होयत"],
+["मुकाबलाक","मोकाबलाक"], ["दिलौलनि","दियौलनि"], ["तऽ","तं"], ["होएत","होयत"],
 ["होएला","भेला"], ["फैलैत","पसरैत"], ["लाखों","लाखो"], ["सम्पूर्ण","संपूर्ण"],["फैलल","पसरल"],
 ["सम्पत्ति","संपत्ति"], ["सम्पर्क","संपर्क"], ["सम्पादन","संपादन"], ["सम्पन्न","संपन्न"],
 ["सम्पन्नता","संपन्नता"], ["सम्प्रदाय","संप्रदाय"], ["सम्प्रेषण","संप्रेषण"], ["सम्पोषण","संपोषण"],
-["सम्बन्ध","संबंध"], ["सम्बन्धित","सं संबंधित"], ["सम्बन्धी","संबंधी"], ["सम्बोधन","संबोधन"],
-["सम्बल","संबल"], ["करि","कए"], ["जाएबापर", "गेला पर"], ["आरम्भ", "आरंभ"],
-["कएने", "केने"], ["जनआन्दोलन", "जनआ आंदोलन"], ["आन्दोलन", "आंदोलन"], ["अत्यन्त", "अत्यंत"],["कार्रवाई","कारबाइ"],
+["सम्बन्ध","संबंध"], ["सम्बन्धित","संबंधित"],
+["सम्बन्धी","संबंधी"], ["सम्बोधन","संबोधन"],
+["सम्बल","संबल"], ["करि","कए"], ["जाएबा पर", "गेला पर"], ["जाएबापर", "गेला पर"],
+["आरम्भ", "आरंभ"],
+["कएने", "केने"], ["जनआन्दोलन", "जनआंदोलन"],
+["आन्दोलन", "आंदोलन"], ["अत्यन्त", "अत्यंत"],["कार्रवाई","कारबाइ"],
 ["सिन्दूर", "सिंदूर"], ["निरन्तर", "निरंतर"], ["महागठबन्धनक", "महागठबंधनक"],
-["महागठबन्धन", "महागठबंधन"], ["गठबन्धन", " गठबंधन"], ["सम्भव","संभव"],
+["महागठबन्धन", "महागठबंधन"],
+["गठबन्धन", "गठबंधन"], ["सम्भव","संभव"],
 ["सम्भावना","संभावना"], ["सम्भाल","संभाल"], ["सम्भवतः","संभवतः"], ["सम्भाषण","संभाषण"],
-["कहा","कहलनि"], ["बताया","बतौलनि"], ["पूरी तरह","पूरा तरहे"], ["चार","चारि"],
-["ओर सं","दिस सं"], ["वाला","बला"], ["तहत","intent"], ["जल्द","शीघ्र"],["आगाँ","आगू"],
+["कहा","कहलनि"], ["बताया","बतौलनि"], ["पूरी तरह","पूरा तरहे"],
+["चार","चारि"],
+["ओर सं","दिस सं"],
+["वाला","बला"], ["तहत","अंतर्गत"], ["जल्द","शीघ्र"],["आगाँ","आगू"],
 ["विश्वभर","विश्वभरि"], ["देशभर","देशभरि"], ["हुनकें","हुनका"], ["काफी","बहुत"],
 ["घाम","रौद"], ["वर्षा","बरखा"], ["रुपया","रुपैया"], ["खड़ा","ठाढ़"],
-["नुकसान","नोकсан"], ["पौधा","गाछ"], ["रख","राखि"], ["बड़ी","पैघ"],
+["नुकसान","नोकसान"], ["पौधा","गाछ"], ["रख","राखि"], ["बड़ी","पैघ"],
 ["बड़े","पैघ"], ["वाले","बला"], ["सबसे","सबसं"], ["शाम","सांझ"], ["संझा","सांझ"],
-["सोमवार","सोम"], ["मंगलवार","मंगल"], ["बुध्रवार","बुध"],
+["सोमवार","सोम"], ["मंगलवार","मंगल"], ["बुधवार","बुध"], ["बुध्रवार","बुध"],
 ["शुक्रवार","शुक्र"], ["शनिवार","शनि"], ["रविवार","रवि"], ["निर्देश दिया","निर्देश देलनि"],
-["समीक्षा की","समीक्षा कएलनि"], ["मांग की","मांग राखल गेल"], ["निर्णय लिया","निर्णय लेल गेल"],
-["शुरू हुआ","शुरुआत भेल"], ["शुरू हुई","शुरुआत भेल"], ["समाप्त हुआ","समापन भेल"],
-["समाप्त हुई","समापन भेल"], ["चौड़ी","चौड़ा"], ["पहुँचे","पहुंचल"], ["उपस्थित रहे","उपस्थित छलाह"],
-["शामिल हुए","शामिल भेलाह"], ["दूसरी","दोसर"], ["दूसरे","दोसर"], ["तीसरी","तेसर"],
-["तीसरे","तेसर"], ["चौथी","चारिम"], ["चौथे","चारिम"], ["पांचवीं","पांचम"],
-["पांचवें","पांचम"], ["баढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"],
-["लेकर","लए कए"], ["ले कर","लए कए"], ["सुनवाई","सुनवाइ"], ["दुकान","दोकान"],
+["समीक्षा की","समीक्षा कएलनि"], ["समीक्षाकी","समीक्षा कएलनि"], ["मांग की","मांग राखल गेल"], ["मांगकी","मांग राखल गेल"], ["निर्णय लिया","निर्णय लेल गेल"],
+["शुरू हुआ","शुरुआत भेल"], ["शुरूहुआ","शुरुआत भेल"], ["शुरू हुई","शुरुआत भेल"], ["शुरूहुई","शुरुआत भेल"], ["समाप्त हुआ","समापन भेल"], ["समाप्तहुआ","समापन भेल"],
+["समाप्त हुई","समापन भेल"], ["समाप्तहुई","समापन भेल"], ["चौड़ी","चौड़ा"], ["पहुँचे","पहुंचल"], ["उपस्थित रहे","उपस्थित छलाह"],
+["शामिल हुए","शामिल भेलाह"], ["शामिलहुए","शामिल भेलाह"], ["दूसरी","दोसर"], ["दूसरे","दोसर"], ["तीसरी","तेसर"],["होमए ","होमय "], ["लोकनि ","लोक "],["आगाँ ","आगू "], ["तीसरे","तेसर"], ["चौथी","चारिम"], ["चौथे","चारिम"], ["पांचवीं","पांचम"],
+["पांचवें","पांचम"], ["बाढ़","बाढ़ि"], ["बाढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"],
+["लेकर","लए कए"], ["ले कर","लए कए"], ["कएने","केने"],
+["सुनवाई","सुनवाइ"], ["दुकान","दोकान"],["होएत","होयत"],["बर्षाक","बरखाक"],
 ["दुकानक","दोकानक"], ["दुकानकार","दोकानदार"], ["दुकानदारक","दोकानदारक"],
 ["खिलाफ","विरुद्ध"], ["मुकाबला","मोकाबला"], ["बीमार","बेमार"], ["बुखार","बोखार"],
 ["आंधी","अन्हर"], ["आँधी","अन्हर"], ["तूफान","बीहाड़ि"], ["अखबार","समाचारपत्र"],
@@ -254,13 +263,17 @@ const rules = [
 ["अंदेशा","आशंका"], ["अंतिम","आखरी"], ["अंतर","भेद"], ["रुपयाक","रुपैयाक"],
 ["ल","लए"], ["लऽ","लए"], ["कऽ","कए"], ["दऽ","दए"], ["भऽ","भए"], ["धूप","रौद"],
 ["सिर","माथ"], ["हजारों","हजारो"], ["करोड़ों","करोड़ो"], ["सैकड़ों","सैकड़ो"],
-["त","तं"], ["अंतरराल","विराम"], ["IPS","आईपीएस"], ["IAS","आईएएस"], ["IG","आईजी"],
-["ADG","एडीजी"], ["CMO","सीएमओ"]
+["त","तं"], ["अंतराल","विराम"], ["अंतरराल","विराम"],
+["IPS","आईपीएस"],
+["IAS","आईएएस"],
+["IG","आईजी"],
+["ADG","एडीजी"],
+["CMO","सीएमओ"]
 ];
-
+ 
 const inputNews=document.getElementById("inputNews");
 const outputNews=document.getElementById("outputNews");
-
+ 
 function replaceWholeWord(text,find,replace){
 const escaped=find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 return text.replace(
@@ -268,130 +281,130 @@ new RegExp('(^|[^\\u0900-\\u097Fa-zA-Z0-9])'+escaped+'(?=[^\\u0900-\\u097Fa-zA-Z
 m=>m.replace(find,replace)
 );
 }
-
+ 
 function processNews(){
 let text=inputNews.value;
-
+ 
 // १. सिर्फ डबल स्टार (**) कए हटाबय लेल, सिंगल स्टार (*) सुरक्षित रहत
 text = text.replace(/\*\*(.*?)\*\*/g, '$1');
-
-// २. सटल शब्द सभ कए अलगे कए कए स्पेस देनाई (जैसे: भारतमे -> भारत मे)
-text = text.replace(/([\u0900-\u097F]+)(मे|में)/g, '$1 मे');
-text = text.replace(/([\u0900-\u097F]+)(कें|केँ)/g, '$1 कें');
-text = text.replace(/([\u0900-\u097F]+)(सं|सँ)/g, '$1 सं');
-text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)/g, '$1 सभ');
-
+ 
+// २. सटल शब्दसभ कए अलगे क कए स्पेस देनाई (सिर्फ शब्दक अंत मे \b क साथ ताकि रामेश्वर सुरक्षित रहय)
+text = text.replace(/([\u0900-\u097F]+)(मे|में)\b/g, '$1 मे');
+text = text.replace(/([\u0900-\u097F]+)(कें|केँ)\b/g, '$1 कें');
+text = text.replace(/([\u0900-\u097F]+)(सं|सँ)\b/g, '$1 सं');
+text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)\b/g, '$1 सभ');
+ 
 // ३. विशिष्ट शब्दक बदलाव (धर्मेंद्र, मेंढक कए सुरक्षित रखैत)
 text = text.replace(/\bमें\b/g, 'मे');
 text = text.replace(/\bदोनों\b/g, 'दूनू');
 text = text.replace(/सुबह/g, 'भोर');
 text = text.replace(/गुरुवार/g, 'बृहस्पति');
 text = text.replace(/NHAI/g, 'एनएचएआई');
-text = text.replace(/लय कऽ/g, 'लए कए');
-
+text = text.replace(/लयकऽ/g, 'लए कए');
+ 
 // ४. 'को' कए स्वतंत्र रूप सँ हटाबय लेल
 text = text.replace(/\bको\b/g, '');
-
+ 
 // ५. चंद्रबिंदु (ँ) हटाबय लेल
 text = text.replace(/ँ/g, '');
-
+ 
 // ६. नियम आधारित सामान्य रिप्लेसमेंट
 rules.forEach(rule=>{
 text=replaceWholeWord(text,rule[0],rule[1]);
 });
-
+ 
 // ७. 'क' कए पहिलुका शब्द सँ जोड़ब
 text = text.replace(/\s+क(?=\s|$)/g, 'क');
-
+ 
 // ८. अंग्रेजी अंक मे बदलाव
 const numMap = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
 text = text.replace(/[०-९]/g, m => numMap[m]);
-
+ 
 // ९. अंकक बाद 'म' क नियम (जैसे: 47 म -> 47म)
 text = text.replace(/(\d+)\s*(वां|वें|वी|वा|म)(?=\s|$)/g, '$1म');
-
+ 
 // १०. बाकी व्याकरणिक अनुस्वार नियम
 text = text.replace(/म्([पफबभ])/g, 'ं$1'); 
 text = text.replace(/न्([तथदध])/g, 'ं$1'); 
 text = text.replace(/ण्([टठडढण])/g, 'ं$1');
-
+ 
 // एक्स्ट्रा डबल स्पेस हटा कए ट्रिम करब
 outputNews.value = text.replace(/ {2,}/g, ' ').trim();
 updateStats();
 }
-
+ 
 function updateStats() {
     let inText = inputNews.value.trim();
     let inWords = inText === "" ? 0 : inText.split(/\s+/).length;
     let inChars = inText.length;
-    document.getElementById("inputStats").innerText = `शब्द: ${inWords} | अक्षर: ${inChars}`;
-
+   document.getElementById("inputStats").innerText = `शब्द: ${inWords} | अक्षर: ${inChars}`;
+ 
     let outText = outputNews.value.trim();
     let outWords = outText === "" ? 0 : outText.split(/\s+/).length;
     let outChars = outText.length;
-    document.getElementById("outputStats").innerText = `शब्द: ${outWords} | अक्षर: ${outChars}`;
+   document.getElementById("outputStats").innerText = `शब्द: ${outWords} | अक्षर: ${outChars}`;
 }
-
+ 
 inputNews.addEventListener("input", function() {
     processNews();
 });
 outputNews.addEventListener("input", updateStats);
-
+ 
 document.getElementById("correctBtn").addEventListener("click",processNews);
-
+ 
 document.getElementById("cleanMarkdownBtn").addEventListener("click", function() {
     inputNews.value = inputNews.value.replace(/\*\*(.*?)\*\*/g, '$1');
     processNews();
 });
-
+ 
 document.getElementById("copyBtn").addEventListener("click",()=>{
 navigator.clipboard.writeText(outputNews.value);
 });
-
+ 
 function saveNews(){
 let news=outputNews.value.trim();
 if(news===""){ alert("पहिने समाचार सुधारू"); return; }
 let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
-if(savedNews.includes(news)){ alert("ई समाचार पहिनेसं सेव अछि"); return; }
+if(savedNews.includes(news)){ alert("ई समाचार पहिने सं सेव अछि"); return; }
 savedNews.unshift(news);
 localStorage.setItem("savedNews",JSON.stringify(savedNews));
 loadSavedNews();
 }
-
+ 
 document.getElementById("saveBtn").addEventListener("click",saveNews);
-
+ 
 function loadSavedNews(){
 let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
 let html="";
 savedNews.forEach((news,index)=>{
-html+=`<div><b>News ${index+1}</b> <div><button onclick="openNews(${index})">Open</button> <button onclick="deleteSavedNews(${index})">Delete</button></div></div>`;
+html+=`<div><b>News ${index+1}</b><div><button onclick="openNews(${index})">Open</button> <button onclick="deleteSavedNews(${index})">Delete</button></div></div>`;
 });
 document.getElementById("savedNewsList").innerHTML=html;
 updateCounts();
 }
-
+ 
 function openNews(index){
 let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
 outputNews.value=savedNews[index];
 updateStats();
 }
-
+ 
 function deleteSavedNews(index){
 let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
 savedNews.splice(index,1);
 localStorage.setItem("savedNews",JSON.stringify(savedNews));
 loadSavedNews();
 }
-
+ 
 document.getElementById("clearBtn").addEventListener("click",()=>{
 inputNews.value="";
 outputNews.value="";
 updateStats();
 });
-
+ 
 let customRules=JSON.parse(localStorage.getItem("customRules")||"[]");
 customRules.forEach(rule=>{ rules.push(rule); });
-
+ 
 document.getElementById("addRuleBtn").addEventListener("click",()=>{
 let oldWord=document.getElementById("oldWord").value.trim();
 let newWord=document.getElementById("newWord").value.trim();
@@ -403,7 +416,7 @@ showRules();
 document.getElementById("oldWord").value="";
 document.getElementById("newWord").value="";
 });
-
+ 
 function showRules(){
 let html="";
 customRules.forEach((rule,index)=>{
@@ -411,46 +424,46 @@ html+=`<div><span>${rule[0]} ➜ ${rule[1]}</span> <button onclick="deleteRule($
 });
 document.getElementById("ruleList").innerHTML=html;
 }
-
+ 
 function deleteRule(index){
 customRules.splice(index,1);
 localStorage.setItem("customRules",JSON.stringify(customRules));
 location.reload();
 }
-
+ 
 function updateCounts(){
 let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
 document.getElementById("countBox").innerHTML="Rules : "+customRules.length+" | Saved News : "+savedNews.length;
 }
-
+ 
 document.getElementById("replaceOutputBtn").addEventListener("click", function() {
     let outText = outputNews.value;
     let findWord = document.getElementById("findOutputWord").value;
     let replaceWord = document.getElementById("replaceOutputWord").value;
     
     if(!findWord) {
-        alert("कृपया खोजे जाने वाला शब्द दर्ज करें");
+        alert("कृपया खोजे जानेवाला शब्द दर्ज करें");
         return;
     }
     
     outputNews.value = replaceWholeWord(outText, findWord, replaceWord);
     updateStats();
     
-    document.getElementById("findOutputWord").value = "";
-    document.getElementById("replaceOutputWord").value = "";
+   document.getElementById("findOutputWord").value = "";
+   document.getElementById("replaceOutputWord").value = "";
 });
-
+ 
 let loadedImage = null;
 const imageInput = document.getElementById("imageInput");
 const imagePreview = document.getElementById("imagePreview");
 const photoNameInput = document.getElementById("photoName");
-
+ 
 imageInput.addEventListener("change", function(e) {
     if(e.target.files && e.target.files[0]) {
         loadImage(e.target.files[0]);
     }
 });
-
+ 
 window.addEventListener("paste", function(e) {
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
@@ -460,7 +473,7 @@ window.addEventListener("paste", function(e) {
         }
     }
 });
-
+ 
 function loadImage(file) {
     const reader = new FileReader();
     reader.onload = function(event) {
@@ -472,9 +485,9 @@ function loadImage(file) {
         };
         img.src = event.target.result;
     };
-    reader.readAsDataURL(file);
+   reader.readAsDataURL(file);
 }
-
+ 
 document.getElementById("downloadImgBtn").addEventListener("click", function() {
     if (!loadedImage) {
         alert("पहिने कोनो फोटो अपलोड या पेस्ट करू");
@@ -485,7 +498,7 @@ document.getElementById("downloadImgBtn").addEventListener("click", function() {
     if (!filename) {
         filename = "image_101";
     }
-
+ 
     const canvas = document.createElement("canvas");
     canvas.width = loadedImage.naturalWidth;
     canvas.height = loadedImage.naturalHeight;
@@ -493,34 +506,34 @@ document.getElementById("downloadImgBtn").addEventListener("click", function() {
     
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(loadedImage, 0, 0);
-
+   ctx.drawImage(loadedImage, 0, 0);
+ 
     const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
     
     const link = document.createElement("a");
     link.download = filename + ".jpg";
     link.href = dataUrl;
     link.click();
-
+ 
     const match = filename.match(/(\d+)$/);
     if (match) {
         const nextNum = parseInt(match[1], 10) + 1;
         const paddedNum = String(nextNum).padStart(match[1].length, '0');
-        photoNameInput.value = filename.replace(/\d+$/, paddedNum);
+       photoNameInput.value = filename.replace(/\d+$/, paddedNum);
     }
 });
-
+ 
 document.getElementById("clearImgBtn").addEventListener("click", function() {
     loadedImage = null;
     imageInput.value = "";
     imagePreview.src = "";
-    imagePreview.style.display = "none";
+   imagePreview.style.display = "none";
 });
-
+ 
 setInterval(()=>{
 localStorage.setItem("draftNews",inputNews.value);
 },5000);
-
+ 
 window.addEventListener("load",()=>{
 let draft=localStorage.getItem("draftNews");
 if(draft){ inputNews.value=draft; }
