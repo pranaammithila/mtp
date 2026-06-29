@@ -291,13 +291,13 @@ function processNews(){
     // ४. 'को' कए स्वतंत्र रूप सँ हटाबय लेल
     text = text.replace(/\bको\b/g, '');
      
-    // ५. चंद्रबिंदु (ँ) हटाबय लेल
-    text = text.replace(/ँ/g, '');
-     
-    // ६. नियम आधारित सामान्य रिप्लेसमेंट
+    // ६. नियम आधारित सामान्य रिप्लेसमेंट (सँ ➜ सं सही काज करत)
     rules.forEach(rule => {
         text = replaceWholeWord(text, rule[0], rule[1]);
     });
+     
+    // ५. चंद्रबिंदु (ँ) हटा कए बिंदु (ं) देबाक नियम
+    text = text.replace(/ँ/g, 'ं');
      
     // ७. 'क' कए पहिलुका शब्द सँ जोड़ब
     text = text.replace(/\s+क(?=\s|$)/g, 'क');
@@ -316,7 +316,7 @@ function processNews(){
      
     outputNews.value = text.replace(/ {2,}/g, ' ').trim();
     updateStats();
-}
+ }
  
 function updateStats() {
     let inText = inputNews.value.trim();
