@@ -67,26 +67,27 @@ gap: 8px;
 }
  
 button {
-    padding: 8px 14px; /* पैडिंग कनी कम क देल गेल अछि */
-    flex: 0 1 auto; /* बटन कें जबरदस्ती फैलबा सं रोकत */
-    width: auto; /* शब्दक हिसाब सं चौड़ाई लेत */
-    min-width: unset; /* कम सं कम वाला सीमा कें हटा देल गेल अछि */
+    padding: 8px 14px;
+    flex: 0 1 auto;
+    width: auto;
+    min-width: unset;
     cursor: pointer;
     border: none;
     border-radius: 6px;
     background: #0073aa;
     color: #fff;
-    font-size: 15px; /* फॉन्ट साइज कनी छोट क देल गेल अछि */
+    font-size: 15px;
     font-weight: bold;
     text-align: center;
     touch-action: manipulation;
+    transition: background 0.2s ease;
 }
  
 button:hover {
 background: #005f8d;
 }
  
-#savedNewsList div {
+#savedNewsList div, #ruleList div {
 padding: 10px;
 border-bottom: 1px solid #ddd;
 display: flex;
@@ -181,10 +182,10 @@ border-radius: 6px;
 </div>
  
 <div class="box">
-<h3>Find & Replace in Output Box (सुधारल समाचार में बदलो)</h3>
+<h3>Find & Replace in Output Box (सुधारल समाचार में बदलू)</h3>
 <div class="find-replace-flex">
-<input id="findOutputWord" type="text" placeholder="आउटपुट बॉक्स में की खोजब?">
-<input id="replaceOutputWord" type="text" placeholder="ओकरा ककर सं बदलब?">
+<input id="findOutputWord" type="text" placeholder="आउटपुट बॉक्स में की ताकब?">
+<input id="replaceOutputWord" type="text" placeholder="ओकरा ककरा सं बदलब?">
 <button class="output-find-btn" id="replaceOutputBtn">Replace All</button>
 </div>
 </div>
@@ -212,14 +213,11 @@ border-radius: 6px;
  
 <script>
 const rules = [
-["सँ","सं"], ["केँ","कें"], ["पानी","पानि"], ["कहलथिन","कहलनि"],
-["जबकि","जखनकि"],
+["सँ","सं"], ["केँ","कें"], ["पानी","पानि"], ["कहलथिन","कहलनि"], ["जबकि","जखनकि"],
 ["आज","आइ"], ["केवल","मात्र"], ["चौथा","चारिम"],["मिट्टी","माटि"],
 ["तीसरा","तेसर"], ["दूसरा","दोसर"], ["पांचवां","पांचम"], ["अब तक","एखन धरि"],
 ["बड़ा","पैघ"], ["नजर","नजरि"], ["आग","आगि"], ["मरीज़","रोगी"], ["मरीज","रोगी"], ["गिरा","खसल"],
-["गिरे","खसल"], ["राहत","राहति"], ["बार-बार","बेर-बेर"],
-["मिलल","भेटल"],
-["ओर से","दिस सं"],
+["गिरे","खसल"], ["राहत","राहति"], ["बार-बार","बेर-बेर"], ["मिलल","भेटल"], ["ओर से","दिस सं"],
 ["सिर्फ","मात्र"], ["तालाब","पोखरि"], ["भ","भए"], ["सफेद","उजर"],
 ["मौसम","मौसिम"], ["मौसमक","मौसिमक"], ["बनाए","बना"], ["खिलाड़ी","खेलाड़ी"],["अनेक","कतेको"],
 ["खिलाड़ीक","खेलाड़ीक"], ["बेहतर","नीक"], ["संभाललनि","संभारलनि"],
@@ -227,23 +225,16 @@ const rules = [
 ["होएला","भेला"], ["फैलैत","पसरैत"], ["लाखों","लाखो"], ["सम्पूर्ण","संपूर्ण"],["फैलल","पसरल"],
 ["सम्पत्ति","संपत्ति"], ["सम्पर्क","संपर्क"], ["सम्पादन","संपादन"], ["सम्पन्न","संपन्न"],
 ["सम्पन्नता","संपन्नता"], ["सम्प्रदाय","संप्रदाय"], ["सम्प्रेषण","संप्रेषण"], ["सम्पोषण","संपोषण"],
-["सम्बन्ध","संबंध"], ["सम्बन्धित","संबंधित"],
-["सम्बन्धी","संबंधी"], ["सम्बोधन","संबोधन"],
-["सम्बल","संबल"], ["करि","कए"], ["जाएबा पर", "गेला पर"], ["जाएबापर", "गेला पर"],
-["आरम्भ", "आरंभ"],
-["कएने", "केने"], ["जनआन्दोलन", "जनआंदोलन"],
-["आन्दोलन", "आंदोलन"], ["अत्यन्त", "अत्यंत"],["कार्रवाई","कारबाइ"],
-["सिन्दूर", "सिंदूर"], ["निरन्तर", "निरंतर"], ["महागठबन्धनक", "महागठबंधनक"],
-["महागठबन्धन", "महागठबंधन"],
-["गठबन्धन", "गठबंधन"], ["सम्भव","संभव"],
-["सम्भावना","संभावना"], ["सम्भाल","संभाल"], ["सम्भवतः","संभवतः"], ["सम्भाषण","संभाषण"],
-["कहा","कहलनि"], ["बताया","बतौलनि"], ["पूरी तरह","पूरा तरहे"],["हुनका कहलनि","ओ कहलनि"],
-["चार","चारि"],
-["ओर सं","दिस सं"],
-["वाला","बला"], ["तहत","अंतर्गत"], ["जल्द","शीघ्र"],["आगाँ","आगू"],
+["सम्बन्ध","संबंध"], ["सम्बन्धित","संबंधित"], ["सम्बन्धी","संबंधी"], ["सम्बोधन","संबोधन"],
+["सम्बल","संबल"], ["करि","कए"], ["जाएबा पर", "गेला पर"], ["जाएबापर", "गेला पर"], ["आरम्भ", "आरंभ"],
+["कएने", "केने"], ["जनआन्दोलन", "जनआंदोलन"], ["आन्दोलन", "आंदोलन"], ["अत्यन्त", "अत्यंत"],["कार्रवाई","कारबाइ"],
+["सिन्दूर", "सिंदूर"], ["निरन्तर", "निरंतर"], ["महागठबन्धनक", "महागठबंधनक"], ["महागठबन्धन", "महागठबंधन"],
+["गठबन्धन", "गठबंधन"], ["सम्भव","संभव"], ["सम्भावना","संभावना"], ["सम्भाल","संभाल"], ["सम्भवतः","संभवतः"], ["सम्भाषण","संभाषण"],
+["कहा","कहलनि"], ["बताया","बतौलनि"], ["पूरी तरह","पूरा तरहे"],["हुनका कहलनि","ओ कहलनि"], ["चार","चारि"],
+["ओर सं","दिस सं"], ["वाला","बला"], ["तहत","अंतर्गत"], ["जल्द","शीघ्र"],["आगाँ","आगू"],
 ["विश्वभर","विश्वभरि"], ["देशभर","देशभरि"], ["हुनकें","हुनका"], ["काफी","बहुत"],
 ["घाम","रौद"], ["वर्षा","बरखा"], ["रुपया","रुपैया"], ["खड़ा","ठाढ़"],
-["नुकसान","नोकसान"], ["पौधा","गाछ"], ["रख","राखि"], ["बड़ी","पैघ"], ["कार्रवाईक","कारबाइक"],
+["nuksaan","नोकसान"], ["नुकसान","नोकसान"], ["पौधा","गाछ"], ["रख","राखि"], ["बड़ी","पैघ"], ["कार्रवाईक","कारबाइक"],
 ["बड़े","पैघ"], ["वाले","बला"], ["सबसे","सबसं"], ["शाम","सांझ"], ["संझा","सांझ"],
 ["सोमवार","सोम"], ["मंगलवार","मंगल"], ["बुधवार","बुध"], ["सफर","यात्रा"],
 ["शुक्रवार","शुक्र"], ["शनिवार","शनि"], ["रविवार","रवि"], ["निर्देश दिया","निर्देश देलनि"],
@@ -251,7 +242,7 @@ const rules = [
 ["शुरू हुआ","शुरुआत भेल"], ["शुरूहुआ","शुरुआत भेल"], ["शुरू हुई","शुरुआत भेल"], ["शुरूहुई","शुरुआत भेल"], ["समाप्त हुआ","समापन भेल"], ["समाप्तहुआ","समापन भेल"],
 ["समाप्त हुई","समापन भेल"], ["समाप्तहुई","समापन भेल"], ["चौड़ी","चौड़ा"], ["पहुँचे","पहुंचल"], ["उपस्थित रहे","उपस्थित छलाह"],
 ["शामिल हुए","शामिल भेलाह"], ["शामिलहुए","शामिल भेलाह"], ["दूसरी","दोसर"], ["दूसरे","दोसर"], ["तीसरी","तेसर"],["होमए ","होमय "], ["लोकनि ","लोक "],["आगाँ ","आगू "], ["तीसरे","तेसर"], ["चौथी","चारिम"], ["चौथे","चारिम"], ["पांचवीं","पांचम"],
-["पांचवें","पांचम"], ["बाढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"], ["दिनदहाड़े","दिन-देखाड़"],
+["पांचवें","पांचम"], ["बाढ़","बाढ़ि"], ["भ'","भए"], ["भ’","भए"], ["ओर सँ","दिस सं"], ["दिनदहाड़े","दिन-देखाड़"],
 ["लेकर","लए कए"], ["ले कर","लए कए"], ["कएने","केने"],
 ["सुनवाई","सुनवाइ"], ["दुकान","दोकान"],["होएत","होयत"],["बर्षाक","बरखाक"],
 ["दुकानक","दोकानक"], ["दुकानकार","दोकानदार"], ["दुकानदारक","दोकानदारक"],
@@ -263,20 +254,15 @@ const rules = [
 ["अग्नि","आगि"], ["अग्निकांड","अगिलग्गी"], ["अंदर","भीतर"], ["अंदाज","अनुमान"],
 ["अंदेशा","आशंका"], ["अंतिम","आखरी"], ["अंतर","भेद"], ["रुपयाक","रुपैयाक"],
 ["ल","लए"], ["लऽ","लए"], ["कऽ","कए"], ["दऽ","दए"], ["भऽ","भए"], ["धूप","रौद"],
-["सिर","माथ"], ["हजारों","हजारो"], ["करोड़ों","करोड़ो"], ["सैकड़ों","सैकड़ो"], ["मामला","मामिला"], ["मामलाक","मामिलाक"],
+["सिर","माथ"], ["हजारों","हजारो"], ["करोड़ों","करोड़ो"], ["सैकड़ों","सैकड़o"], ["मामला","मामिला"], ["मामलाक","मामिलाक"],
 ["त","तं"], ["अंतराल","विराम"], ["करनिहार","कएनिहार"],
-["IPS","आईपीएस"],
-["IAS","आईएएस"],
-["IG","आईजी"],
-["ADG","एडीजी"],
-["CMO","सीएमओ"]
+["IPS","आईपीएस"], ["IAS","आईएएस"], ["IG","आईजी"], ["ADG","एडीजी"], ["CMO","सीएमओ"]
 ];
  
 const inputNews=document.getElementById("inputNews");
 const outputNews=document.getElementById("outputNews");
  
 function replaceWholeWord(text, find, replace) {
-    // देवनागरी आ अंग्रेजी दुनू लेल एकदम सटीक वर्ड बाउंड्री (Word Boundary) लॉजिक
     const escaped = find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp('(^|[^\\u0900-\\u097Fa-zA-Z0-9])(' + escaped + ')(?=[^\\u0900-\\u097Fa-zA-Z0-9]|$)', 'g');
     return text.replace(regex, (match, p1, p2) => p1 + replace);
@@ -285,16 +271,16 @@ function replaceWholeWord(text, find, replace) {
 function processNews(){
     let text = inputNews.value;
      
-    // १. सिर्फ डबल स्टार (**) कए हटाबय लेल, SINGLE स्टार (*) सुरक्षित रहत
+    // १. सिर्फ डबल स्टार (**) कए हटाबय लेल
     text = text.replace(/\*\*(.*?)\*\*/g, '$1');
      
-    // २. सटल शब्दसभ कए अलगे क कए स्पेस देनाई (सिर्फ शब्दक अंत मे - रामेश्वर सुरक्षित रहत)
+    // २. सटल शब्दसभ कए अलगे क कए स्पेस देनाई
     text = text.replace(/([\u0900-\u097F]+)(मे|में)(?=\s|$)/g, '$1 मे');
     text = text.replace(/([\u0900-\u097F]+)(कें|केँ)(?=\s|$)/g, '$1 कें');
     text = text.replace(/([\u0900-\u097F]+)(सं|सँ)(?=\s|$)/g, '$1 सं');
     text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)(?=\s|$)/g, '$1 सभ');
      
-    // ३. विशिष्ट शब्दक बदलाव (धर्मेंद्र, मेंढक कए सुरक्षित रखैत)
+    // ३. विशिष्ट शब्दक बदलाव
     text = text.replace(/\bमें\b/g, 'मे');
     text = text.replace(/\bदोनों\b/g, 'दूनू');
     text = text.replace(/सुबह/g, 'भोर');
@@ -308,7 +294,7 @@ function processNews(){
     // ५. चंद्रबिंदु (ँ) हटाबय लेल
     text = text.replace(/ँ/g, '');
      
-    // ६. नियम आधारित सामान्य रिप्लेसमेंट (अब ई अपग्रेड भ गेल अछि, मामला -> मामिला सही काम करत)
+    // ६. नियम आधारित सामान्य रिप्लेसमेंट
     rules.forEach(rule => {
         text = replaceWholeWord(text, rule[0], rule[1]);
     });
@@ -320,7 +306,7 @@ function processNews(){
     const numMap = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
     text = text.replace(/[०-९]/g, m => numMap[m]);
      
-    // ९. अंकक बाद 'म' क नियम (जैसे: 47 म -> 47म)
+    // ९. अंकक बाद 'म' क नियम
     text = text.replace(/(\d+)\s*(वां|वें|वी|वा|म)(?=\s|$)/g, '$1म');
      
     // १०. बाकी व्याकरणिक अनुस्वार नियम
@@ -328,160 +314,119 @@ function processNews(){
     text = text.replace(/न्([तथदध])/g, 'ं$1'); 
     text = text.replace(/ण्([टठडढण])/g, 'ं$1');
      
-    // एक्स्ट्रा डबल स्पेस हटा कए ट्रिम करब
     outputNews.value = text.replace(/ {2,}/g, ' ').trim();
     updateStats();
-}function processNews(){
-let text=inputNews.value;
+}
  
-// १. सिर्फ डबल स्टार (**) कए हटाबय लेल, SINGLE स्टार (*) सुरक्षित रहत
-text = text.replace(/\*\*(.*?)\*\*/g, '$1');
- 
-// २. सटल शब्दसभ कए अलगे क कए स्पेस देनाई (सिर्फ शब्दक अंत मे - रामेश्वर सुरक्षित रहत)
-text = text.replace(/([\u0900-\u097F]+)(मे|में)(?=\s|$)/g, '$1 मे');
-text = text.replace(/([\u0900-\u097F]+)(कें|केँ)(?=\s|$)/g, '$1 कें');
-text = text.replace(/([\u0900-\u097F]+)(सं|सँ)(?=\s|$)/g, '$1 सं');
-text = text.replace(/([\u0900-\u097F]+)सभ(?!ा)(?=\s|$)/g, '$1 सभ');
- 
-// ३. विशिष्ट शब्दक बदलाव (धर्मेंद्र, मेंढक कए सुरक्षित रखैत)
-text = text.replace(/\bमें\b/g, 'मे');
-text = text.replace(/\bदोनों\b/g, 'दूनू');
-text = text.replace(/सुबह/g, 'भोर');
-text = text.replace(/गुरुवार/g, 'बृहस्पति');
-text = text.replace(/NHAI/g, 'एनएचएआई');
-text = text.replace(/लयकऽ/g, 'लए कए');
- 
-// ४. 'को' कए स्वतंत्र रूप सँ हटाबय लेल
-text = text.replace(/\bको\b/g, '');
- 
-// ५. चंद्रबिंदु (ँ) हटाबय लेल
-text = text.replace(/ँ/g, '');
- 
-// ६. नियम आधारित सामान्य रिप्लेसमेंट
-rules.forEach(rule=>{
-text=replaceWholeWord(text,rule[0],rule[1]);
-});
- 
-// ७. 'क' कए पहिलुका शब्द सँ जोड़ब
-text = text.replace(/\s+क(?=\s|$)/g, 'क');
- 
-// ८. अंग्रेजी अंक मे बदलाव
-const numMap = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
-text = text.replace(/[०-९]/g, m => numMap[m]);
- 
-// ९. अंकक बाद 'म' क नियम (जैसे: 47 म -> 47म)
-text = text.replace(/(\d+)\s*(वां|वें|वी|वा|म)(?=\s|$)/g, '$1म');
- 
-// १०. बाकी व्याकरणिक अनुस्वार नियम
-text = text.replace(/म्([पफबभ])/g, 'ं$1'); 
-text = text.replace(/न्([तथदध])/g, 'ं$1'); 
-text = text.replace(/ण्([टठडढण])/g, 'ं$1');
- 
-// एक्स्ट्रा डबल स्पेस हटा कए ट्रिम करब
-outputNews.value = text.replace(/ {2,}/g, ' ').trim();
-updateStats();
-} 
 function updateStats() {
     let inText = inputNews.value.trim();
     let inWords = inText === "" ? 0 : inText.split(/\s+/).length;
     let inChars = inText.length;
-   document.getElementById("inputStats").innerText = `शब्द: ${inWords} | अक्षर: ${inChars}`;
+    document.getElementById("inputStats").innerText = `शब्द: ${inWords} | अक्षर: ${inChars}`;
  
     let outText = outputNews.value.trim();
     let outWords = outText === "" ? 0 : outText.split(/\s+/).length;
     let outChars = outText.length;
-   document.getElementById("outputStats").innerText = `शब्द: ${outWords} | अक्षर: ${outChars}`;
+    document.getElementById("outputStats").innerText = `शब्द: ${outWords} | अक्षर: ${outChars}`;
 }
  
-inputNews.addEventListener("input", function() {
-    processNews();
-});
+// सिर्फ लाइव स्टैट्स अपडेट होयत, टेक्स्ट ऑटो-चेंज नै होयत
+inputNews.addEventListener("input", updateStats);
 outputNews.addEventListener("input", updateStats);
  
-document.getElementById("correctBtn").addEventListener("click",processNews);
+// "सुधारू" बटन पर क्लिक कएला पर ही समाचार प्रोसेस होयत
+document.getElementById("correctBtn").addEventListener("click", processNews);
  
 document.getElementById("cleanMarkdownBtn").addEventListener("click", function() {
     inputNews.value = inputNews.value.replace(/\*\*(.*?)\*\*/g, '$1');
-    processNews();
+    updateStats();
 });
  
-document.getElementById("copyBtn").addEventListener("click",()=>{
-navigator.clipboard.writeText(outputNews.value);
+// कॉपी बटन कें फीडबैक ऑप्शन क संग अपडेट क देल गेल अछि
+document.getElementById("copyBtn").addEventListener("click", function(){
+    navigator.clipboard.writeText(outputNews.value);
+    const origText = this.innerText;
+    this.innerText = "Copied!";
+    this.style.backgroundColor = "#46b450";
+    setTimeout(() => {
+        this.innerText = origText;
+        this.style.backgroundColor = "#0073aa";
+    }, 1200);
 });
  
 function saveNews(){
-let news=outputNews.value.trim();
-if(news===""){ alert("पहिने समाचार सुधारू"); return; }
-let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
-if(savedNews.includes(news)){ alert("ई समाचार पहिने सं सेव अछि"); return; }
-savedNews.unshift(news);
-localStorage.setItem("savedNews",JSON.stringify(savedNews));
-loadSavedNews();
+    let news=outputNews.value.trim();
+    if(news===""){ alert("पहिने समाचार सुधारू"); return; }
+    let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+    if(savedNews.includes(news)){ alert("ई समाचार पहिने सं सेव अछि"); return; }
+    savedNews.unshift(news);
+    localStorage.setItem("savedNews",JSON.stringify(savedNews));
+    loadSavedNews();
 }
  
 document.getElementById("saveBtn").addEventListener("click",saveNews);
  
 function loadSavedNews(){
-let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
-let html="";
-savedNews.forEach((news,index)=>{
-html+=`<div><b>News ${index+1}</b><div><button onclick="openNews(${index})">Open</button> <button onclick="deleteSavedNews(${index})">Delete</button></div></div>`;
-});
-document.getElementById("savedNewsList").innerHTML=html;
-updateCounts();
+    let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+    let html="";
+    savedNews.forEach((news,index)=>{
+        html+=`<div><b>News ${index+1}</b><div><button onclick="openNews(${index})">Open</button> <button style="background:#dc3232" onclick="deleteSavedNews(${index})">Delete</button></div></div>`;
+    });
+    document.getElementById("savedNewsList").innerHTML=html;
+    updateCounts();
 }
  
 function openNews(index){
-let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
-outputNews.value=savedNews[index];
-updateStats();
+    let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+    outputNews.value=savedNews[index];
+    updateStats();
 }
  
 function deleteSavedNews(index){
-let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
-savedNews.splice(index,1);
-localStorage.setItem("savedNews",JSON.stringify(savedNews));
-loadSavedNews();
+    let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+    savedNews.splice(index,1);
+    localStorage.setItem("savedNews",JSON.stringify(savedNews));
+    loadSavedNews();
 }
  
 document.getElementById("clearBtn").addEventListener("click",()=>{
-inputNews.value="";
-outputNews.value="";
-updateStats();
+    inputNews.value="";
+    outputNews.value="";
+    updateStats();
 });
  
 let customRules=JSON.parse(localStorage.getItem("customRules")||"[]");
 customRules.forEach(rule=>{ rules.push(rule); });
  
 document.getElementById("addRuleBtn").addEventListener("click",()=>{
-let oldWord=document.getElementById("oldWord").value.trim();
-let newWord=document.getElementById("newWord").value.trim();
-if(!oldWord||!newWord){ alert("दुनू शब्द भरू"); return; }
-rules.push([oldWord,newWord]);
-customRules.push([oldWord,newWord]);
-localStorage.setItem("customRules",JSON.stringify(customRules));
-showRules();
-document.getElementById("oldWord").value="";
-document.getElementById("newWord").value="";
+    let oldWord=document.getElementById("oldWord").value.trim();
+    let newWord=document.getElementById("newWord").value.trim();
+    if(!oldWord||!newWord){ alert("दुनू शब्द भरू"); return; }
+    rules.push([oldWord,newWord]);
+    customRules.push([oldWord,newWord]);
+    localStorage.setItem("customRules",JSON.stringify(customRules));
+    showRules();
+    document.getElementById("oldWord").value="";
+    document.getElementById("newWord").value="";
 });
  
 function showRules(){
-let html="";
-customRules.forEach((rule,index)=>{
-html+=`<div><span>${rule[0]} ➜ ${rule[1]}</span> <button onclick="deleteRule(${index})">Delete</button></div>`;
-});
-document.getElementById("ruleList").innerHTML=html;
+    let html="";
+    customRules.forEach((rule,index)=>{
+        html+=`<div><span>${rule[0]} ➜ ${rule[1]}</span> <button style="background:#dc3232" onclick="deleteRule(${index})">Delete</button></div>`;
+    });
+    document.getElementById("ruleList").innerHTML=html;
 }
  
 function deleteRule(index){
-customRules.splice(index,1);
-localStorage.setItem("customRules",JSON.stringify(customRules));
-location.reload();
+    customRules.splice(index,1);
+    localStorage.setItem("customRules",JSON.stringify(customRules));
+    location.reload();
 }
  
 function updateCounts(){
-let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
-document.getElementById("countBox").innerHTML="Rules : "+customRules.length+" | Saved News : "+savedNews.length;
+    let savedNews=JSON.parse(localStorage.getItem("savedNews")||"[]");
+    document.getElementById("countBox").innerHTML="Rules : "+customRules.length+" | Saved News : "+savedNews.length;
 }
  
 document.getElementById("replaceOutputBtn").addEventListener("click", function() {
@@ -497,8 +442,8 @@ document.getElementById("replaceOutputBtn").addEventListener("click", function()
     outputNews.value = replaceWholeWord(outText, findWord, replaceWord);
     updateStats();
     
-   document.getElementById("findOutputWord").value = "";
-   document.getElementById("replaceOutputWord").value = "";
+    document.getElementById("findOutputWord").value = "";
+    document.getElementById("replaceOutputWord").value = "";
 });
  
 let loadedImage = null;
@@ -533,7 +478,7 @@ function loadImage(file) {
         };
         img.src = event.target.result;
     };
-   reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
 }
  
 document.getElementById("downloadImgBtn").addEventListener("click", function() {
@@ -554,7 +499,7 @@ document.getElementById("downloadImgBtn").addEventListener("click", function() {
     
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-   ctx.drawImage(loadedImage, 0, 0);
+    ctx.drawImage(loadedImage, 0, 0);
  
     const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
     
@@ -567,7 +512,7 @@ document.getElementById("downloadImgBtn").addEventListener("click", function() {
     if (match) {
         const nextNum = parseInt(match[1], 10) + 1;
         const paddedNum = String(nextNum).padStart(match[1].length, '0');
-       photoNameInput.value = filename.replace(/\d+$/, paddedNum);
+        photoNameInput.value = filename.replace(/\d+$/, paddedNum);
     }
 });
  
@@ -575,7 +520,7 @@ document.getElementById("clearImgBtn").addEventListener("click", function() {
     loadedImage = null;
     imageInput.value = "";
     imagePreview.src = "";
-   imagePreview.style.display = "none";
+    imagePreview.style.display = "none";
 });
  
 setInterval(()=>{
@@ -583,11 +528,11 @@ localStorage.setItem("draftNews",inputNews.value);
 },5000);
  
 window.addEventListener("load",()=>{
-let draft=localStorage.getItem("draftNews");
-if(draft){ inputNews.value=draft; }
-showRules();
-loadSavedNews();
-updateStats();
+    let draft=localStorage.getItem("draftNews");
+    if(draft){ inputNews.value=draft; }
+    showRules();
+    loadSavedNews();
+    updateStats();
 });
 </script>
 </body>
